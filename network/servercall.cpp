@@ -15,6 +15,7 @@ ServerCall::ServerCall(QObject *parent) :
 	//== Network
 	netMan = new QNetworkAccessManager(this);
 
+	in_request = false;
 
 
 }
@@ -24,8 +25,27 @@ ServerCall::ServerCall(QObject *parent) :
 //===================================================================================
 void ServerCall::fetch_node(QString node)
 {
+	if(request_q.contains(node)){
+		qDebug() << "already - skipped" << node;
+		return;
+	}
+	request_q.enqueue(node);
+	check_q();
+
+}
+
+void ServerCall::check_q()
+{
+	if(in_request == true){
+		return;
+	}
+	if(request_q.isEmpty()){
+		return;
+	}
+	in_request = true;
+
 	QUrl url (server_url);
-	url.setPath(node);
+	url.setPath(request_q.dequeue());
 	url.addQueryItem("json", "1");
 
 	QNetworkRequest request;
@@ -100,6 +120,8 @@ void ServerCall::on_net_finished(){
 			 }
 	}
 	//emit node_vals(hash);
+	in_request = false;
+	check_q();
 }
 
 void ServerCall::set_url(QString new_server)

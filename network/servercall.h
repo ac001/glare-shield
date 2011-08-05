@@ -10,6 +10,7 @@
 #include <QNetworkRequest>
 #include <QNetworkReply>
 
+#include <QQueue>
 
 class ServerCall : public QObject
 {
@@ -26,6 +27,9 @@ public:
 
 	QScriptEngine scriptEngine;
 
+	QQueue<QString> request_q;
+	bool in_request;
+
 signals:
 	void node_val(QString node, QString value);
 	//void node_vals(QHash<QString, QString> vals);
@@ -37,6 +41,8 @@ public slots:
 
 	void fetch_node(QString node);
 	void set_node(QString node, QString val);
+
+	void check_q();
 };
 
 #endif // SERVERCALL_H
