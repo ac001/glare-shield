@@ -6,7 +6,7 @@
 
 
 #include <QHBoxLayout>
-#include <QPushButton>
+#include <QToolButton>
 #include <QLCDNumber>
 #include <QGroupBox>
 
@@ -30,13 +30,13 @@ AutoThrottleWidget::AutoThrottleWidget(QWidget *parent) :
 	buttGroupSpeed = new QButtonGroup(this);
 	connect(buttGroupSpeed, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(on_speed_button(QAbstractButton*)));
 
-	QPushButton *buttDec10 = new QPushButton();
+	QToolButton *buttDec10 = new QToolButton();
 	buttDec10->setText("<<");
 	buttDec10->setProperty("val",QVariant("-10"));
 	buttLay->addWidget(buttDec10);
 	buttGroupSpeed->addButton(buttDec10);
 
-	QPushButton *buttDec1 = new QPushButton();
+	QToolButton *buttDec1 = new QToolButton();
 	buttDec1->setText("<");
 	buttDec1->setProperty("val",QVariant("-1"));
 	buttLay->addWidget(buttDec1);
@@ -51,22 +51,39 @@ AutoThrottleWidget::AutoThrottleWidget(QWidget *parent) :
 	labelSpeed->setStyleSheet("font-family: monospace; font-size: 32pt; font-weight: bold; background-color: #333333; color: #efffff;");
 	buttLay->addWidget(labelSpeed);
 
+
+	QPushButton *buttInc1 = new QPushButton();
+	buttInc1->setText(">>");
+	buttInc1->setProperty("val","1");
+	buttLay->addWidget(buttInc1);
+	buttGroupSpeed->addButton(buttInc1);
+
 	QPushButton *buttInc10 = new QPushButton();
 	buttInc10->setText(">>");
-	buttDec10->setProperty("val","+10");
+	buttInc10->setProperty("val","10");
 	buttLay->addWidget(buttInc10);
 	buttGroupSpeed->addButton(buttInc10);
 
-	QHBoxLayout *layModes = new QHBoxLayout();
+
+	//====================================================
+	QGridLayout *layModes = new QGridLayout();
 	grpLay->addLayout(layModes);
+
+	buttATEnabled = new QPushButton();
+	buttATEnabled->setText("A/T");
+	buttATEnabled->setCheckable(true);
+	buttATEnabled->setIcon(QIcon(":/icon/black"));
+	layModes->addWidget(buttATEnabled, 0, 0, 2, 1);
+	connect(buttATEnabled, SIGNAL(clicked()), this, SLOT(on_at_button_clicked()));
+
 
 	radioSpeedWithThrottle = new QRadioButton();
 	radioSpeedWithThrottle->setText("Speed with Throttle");
-	layModes->addWidget(radioSpeedWithThrottle);
+	layModes->addWidget(radioSpeedWithThrottle, 0, 1, 1, 1);
 
 	radioSpeedWithPitch = new QRadioButton();
 	radioSpeedWithPitch->setText("Speed with Pitch");
-	layModes->addWidget(radioSpeedWithPitch);
+	layModes->addWidget(radioSpeedWithPitch, 1, 1, 1, 1);
 
 
 }
@@ -74,26 +91,22 @@ AutoThrottleWidget::AutoThrottleWidget(QWidget *parent) :
 void AutoThrottleWidget::on_speed_button(QAbstractButton *butt)
 {
 	int val = labelSpeed->text().toInt();
-	//if(val < 70){
-	//	return;
-	//}
 	val = val + butt->property("val").toInt();
-
 	emit set_node("/autopilot/settings/target-speed-kt", QString::number(val));
-	//lcdSpeed->display(butt->);
-	//serverCall->fetch("/autopilot/settings");
-	//emit fetch_node("/autopilot/settings/");
-	//QUrl url ("http://localhost:8888/autopilot/settings/?json=1");
-
 
 }
 
-void AutoThrottleWidget::on_node_val(QString node, QString val)
+void AutoThrottleWidget::on_node_val(QString node, QString value)
 {
-	//qDebug() << node <<  val;
+	//qDebug() << " - at=" << node <<  value;
 	if(node == "/autopilot/settings/target-speed-kt"){
-		labelSpeed->setText(val);
+		labelSpeed->setText(value);
 		//qDebug() << "YES";
+	}
+	if(node == "/instrumentation/flightdirector/at-on"){
+		//qDebug() << node << value;
+		buttATEnabled->setIcon(QIcon(value == "1" ? ":/icon/green" : ":/icon/black"));
+		buttATEnabled->setChecked(value == "1");
 	}
 }
 
@@ -106,3 +119,9 @@ void AutoThrottleWidget::on_node_vals(QHash<QString, QString> hash)
 	}
 }
 */
+
+
+void AutoThrottleWidget::on_at_button_clicked()
+{
+	emit set_node("/instrumentation/flightdirector/at-on", buttATEnabled->isChecked() ? "1" : "0");
+}

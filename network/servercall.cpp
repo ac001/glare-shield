@@ -57,9 +57,9 @@ void ServerCall::set_node(QString node, QString val)
 	server_string = "";
 	reply = netMan->get(request);
 
-	//connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(on_net_error(QNetworkReply::NetworkError)));
-	//connect(reply, SIGNAL(readyRead()), this, SLOT(on_net_ready_read()));
-	//connect(reply, SIGNAL(finished()), this, SLOT(on_net_finished()));
+	connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(on_net_error(QNetworkReply::NetworkError)));
+	connect(reply, SIGNAL(readyRead()), this, SLOT(on_net_ready_read()));
+	connect(reply, SIGNAL(finished()), this, SLOT(on_net_finished()));
 }
 
 //===================================================================================

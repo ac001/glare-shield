@@ -2,13 +2,14 @@
 # Project created by QtCreator 2011-08-05T14:31:25
 # -------------------------------------------------
 QT += network \
-	script
+    script
 TARGET = glare-shield
 TEMPLATE = app
 SOURCES += main.cpp \
-	glareshieldwidget.cpp \
-	panels/autothrottlewidget.cpp \
-	network/servercall.cpp
+    glareshieldwidget.cpp \
+    panels/autothrottlewidget.cpp \
+    network/servercall.cpp
 HEADERS += glareshieldwidget.h \
-	panels/autothrottlewidget.h \
-	network/servercall.h
+    panels/autothrottlewidget.h \
+    network/servercall.h
+RESOURCES += resources/icons.qrc

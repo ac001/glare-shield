@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/icon">
+        <file alias="green">bullet_picture.png</file>
+        <file alias="black">bullet_black.png</file>
+    </qresource>
+</RCC>

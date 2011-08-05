@@ -5,7 +5,7 @@
 #include <QCheckBox>
 #include <QComboBox>
 #include <QLineEdit>
-#include <QToolButton>
+#include <QPushButton>
 
 #include "panels/autothrottlewidget.h"
 #include "network/servercall.h"
@@ -20,7 +20,7 @@ public:
 	QComboBox *comboRefreshRate;
 	QCheckBox *chkAutoRefresh;
 	QLineEdit *txtServerUrl;
-	QToolButton *buttAPEnabled;
+	QPushButton *buttAPEnabled;
 
 	AutoThrottleWidget *autoThrottleWidget;
 
@@ -34,6 +34,7 @@ public slots:
 	void fetch_nodes();
 
 	//void on_node_vals(QHash<QString,QString>);
+	void on_ap_button_clicked();
 };
 
 #endif // GLARESHIELDWIDGET_H

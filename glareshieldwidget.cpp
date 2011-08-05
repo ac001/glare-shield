@@ -2,6 +2,7 @@
 #include <QTimer>
 #include <QHBoxLayout>
 #include <QToolBar>
+#include <QToolButton>
 
 #include "glareshieldwidget.h"
 
@@ -22,10 +23,12 @@ GlareShieldWidget::GlareShieldWidget(QWidget *parent) :
 	QToolBar *controlBar = new QToolBar();
 	mainLayout->addWidget(controlBar);
 
-	buttAPEnabled = new QToolButton();
+	buttAPEnabled = new QPushButton();
 	buttAPEnabled->setText("A/P");
 	buttAPEnabled->setCheckable(true);
+	buttAPEnabled->setIcon(QIcon(":/icon/black"));
 	controlBar->addWidget(buttAPEnabled);
+	connect(buttAPEnabled, SIGNAL(clicked()), this, SLOT(on_ap_button_clicked()));
 
 	chkAutoRefresh = new QCheckBox();
 	chkAutoRefresh->setChecked(true);
@@ -70,9 +73,15 @@ GlareShieldWidget::GlareShieldWidget(QWidget *parent) :
 void GlareShieldWidget::fetch_nodes()
 {
 	serverCall->fetch_node("/autopilot/settings");
+	serverCall->fetch_node("/instrumentation/flightdirector/");
 
 	if(chkAutoRefresh->isChecked()){
 		QTimer::singleShot(1000, this, SLOT(fetch_nodes()));
 	}
 
+}
+
+void GlareShieldWidget::on_ap_button_clicked()
+{
+	serverCall->set_node("/instrumentation/flightdirector/autopilot-on", buttAPEnabled->isChecked() ? "1" : "0");
 }

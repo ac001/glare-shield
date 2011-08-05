@@ -5,6 +5,7 @@
 #include <QButtonGroup>
 #include <QLabel>
 #include <QRadioButton>
+#include <QPushButton>
 
 
 
@@ -20,13 +21,17 @@ public:
 	QRadioButton *radioSpeedWithThrottle;
 	QRadioButton *radioSpeedWithPitch;
 
+	QPushButton *buttATEnabled;
+
 signals:
 	void fetch_node(QString node);
 	void set_node(QString node, QString val);
+
 public slots:
 	void on_speed_button(QAbstractButton *butt);
 	void on_node_val(QString node, QString val);
 	//void on_node_vals(QHash<QString,QString>);
+	void on_at_button_clicked();
 };
 
 #endif // AUTOTHROTTLEWIDGET_H
