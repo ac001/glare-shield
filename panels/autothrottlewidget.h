@@ -7,6 +7,7 @@
 
 
 
+
 class AutoThrottleWidget : public QWidget
 {
 Q_OBJECT
@@ -15,10 +16,16 @@ public:
 
 	QButtonGroup *buttGroupSpeed;
 	QLCDNumber *lcdSpeed;
+
+
+
 signals:
+	void fetch_node(QString node);
 
 public slots:
 	void on_speed_button(QAbstractButton *butt);
+
+
 };
 
 #endif // AUTOTHROTTLEWIDGET_H

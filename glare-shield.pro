@@ -3,11 +3,12 @@
 # -------------------------------------------------
 QT += network \
 	script
-
 TARGET = glare-shield
 TEMPLATE = app
 SOURCES += main.cpp \
 	glareshieldwidget.cpp \
-	panels/autothrottlewidget.cpp
+	panels/autothrottlewidget.cpp \
+	network/servercall.cpp
 HEADERS += glareshieldwidget.h \
-	panels/autothrottlewidget.h
+	panels/autothrottlewidget.h \
+	network/servercall.h

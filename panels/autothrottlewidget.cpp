@@ -1,7 +1,11 @@
 
-#include <QVariant>
-#include <QHBoxLayout>
+#include <QtDebug>
 
+#include <QUrl>
+#include <QVariant>
+
+
+#include <QHBoxLayout>
 #include <QPushButton>
 #include <QLCDNumber>
 
@@ -36,9 +40,16 @@ AutoThrottleWidget::AutoThrottleWidget(QWidget *parent) :
 	buttGroupSpeed->addButton(buttInc10);
 
 
+
 }
 
 void AutoThrottleWidget::on_speed_button(QAbstractButton *butt)
 {
 	//lcdSpeed->display(butt->);
+	//serverCall->fetch("/autopilot/settings");
+	emit fetch_node("/autopilot/settings");
+	//QUrl url ("http://localhost:8888/autopilot/settings/?json=1");
+
+
 }
+

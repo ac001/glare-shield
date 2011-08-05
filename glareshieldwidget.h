@@ -4,6 +4,7 @@
 #include <QWidget>
 
 #include "panels/autothrottlewidget.h"
+#include "network/servercall.h"
 
 class GlareShieldWidget : public QWidget
 {
@@ -13,6 +14,10 @@ public:
 
 
 	AutoThrottleWidget *autoThrottleWidget;
+
+
+	ServerCall *serverCall;
+
 
 signals:
 

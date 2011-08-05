@@ -4,7 +4,7 @@
 
 #include "glareshieldwidget.h"
 
-
+#include "network/servercall.h"
 
 GlareShieldWidget::GlareShieldWidget(QWidget *parent) :
 	QWidget(parent)
@@ -15,4 +15,8 @@ GlareShieldWidget::GlareShieldWidget(QWidget *parent) :
 
 	AutoThrottleWidget *autoThrottleWidget = new AutoThrottleWidget();
 	mainLayout->addWidget(autoThrottleWidget);
+
+
+	serverCall = new ServerCall(this);
+	connect(autoThrottleWidget, SIGNAL(fetch_node(QString)), serverCall, SLOT(fetch_node(QString)));
 }
