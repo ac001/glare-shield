@@ -2,7 +2,7 @@
 #define SERVERCALL_H
 
 #include <QObject>
-
+#include <QHash>
 
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
@@ -19,8 +19,12 @@ public:
 	QNetworkReply *reply;
 	QString server_string;
 
+	QString server_url;
+	void set_url(QString new_server);
+
 signals:
-	void got_node(QString node, QString value);
+	void node_val(QString node, QString value);
+	//void node_vals(QHash<QString, QString> vals);
 
 public slots:
 	void on_net_ready_read();
