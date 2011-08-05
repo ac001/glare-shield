@@ -1,0 +1,6 @@
+glare-shield
+Makefile
+*.o
+moc_*.cpp
+moc_*.o
+
