@@ -2,7 +2,7 @@
 
 #include <QtDebug>
 
-#include <QScriptEngine>
+
 #include <QScriptValue>
 #include <QScriptValueIterator>
 
@@ -30,8 +30,8 @@ void ServerCall::fetch_node(QString node)
 
 	QNetworkRequest request;
 	request.setUrl(url);
-	qDebug() << "----------------------------------------------------------------";
-	qDebug() << url.toString();
+	//qDebug() << "----------------------------------------------------------------";
+	//qDebug() << url.toString();
 
 	server_string = "";
 	reply = netMan->get(request);
@@ -41,6 +41,26 @@ void ServerCall::fetch_node(QString node)
 	connect(reply, SIGNAL(finished()), this, SLOT(on_net_finished()));
 }
 
+
+void ServerCall::set_node(QString node, QString val)
+{
+	QUrl url (server_url);
+	url.setPath(node);
+	url.addQueryItem("json", "1");
+	url.addQueryItem("value", val);
+
+	QNetworkRequest request;
+	request.setUrl(url);
+	//qDebug() << "----------------------------------------------------------------";
+	qDebug() << url.toString();
+
+	server_string = "";
+	reply = netMan->get(request);
+
+	//connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(on_net_error(QNetworkReply::NetworkError)));
+	//connect(reply, SIGNAL(readyRead()), this, SLOT(on_net_ready_read()));
+	//connect(reply, SIGNAL(finished()), this, SLOT(on_net_finished()));
+}
 
 //===================================================================================
 //= Server Callbacks
@@ -57,22 +77,19 @@ void ServerCall::on_net_error(QNetworkReply::NetworkError err){
 //= read_ready - reads data into local server_string buffer
 void ServerCall::on_net_ready_read()
 {
-	qDebug() << "ready reed";
 	server_string.append(reply->readAll());
 }
 
 //= Net finished
 void ServerCall::on_net_finished(){
 
-	qDebug() << "finsihed"; //<< server_string;
 	QScriptValue sc;
-	QScriptEngine engine;
-	sc = engine.evaluate("(" + QString(server_string) + ")"); //?? why ?? In new versions it may need to look like engine.evaluate("(" + QString(result) + ")");
+
+	sc = scriptEngine.evaluate("(" + QString(server_string) + ")"); //?? why ?? In new versions it may need to look like engine.evaluate("(" + QString(result) + ")");
 
 	QHash<QString, QString> hash;
 	if (sc.property("nodes").isArray())
 	{
-			qDebug() << "nodes is aray";
 			QScriptValueIterator it(sc.property("nodes"));
 			 while (it.hasNext()) {
 				 it.next();

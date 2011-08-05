@@ -24,7 +24,7 @@ AutoThrottleWidget::AutoThrottleWidget(QWidget *parent) :
 	QVBoxLayout *grpLay = new QVBoxLayout();
 	groupBox->setLayout(grpLay);
 
-	QVBoxLayout *buttLay = new QVBoxLayout();
+	QHBoxLayout *buttLay = new QHBoxLayout();
 	grpLay->addLayout(buttLay);
 
 	buttGroupSpeed = new QButtonGroup(this);
@@ -42,9 +42,14 @@ AutoThrottleWidget::AutoThrottleWidget(QWidget *parent) :
 	buttLay->addWidget(buttDec1);
 	buttGroupSpeed->addButton(buttDec1);
 
-	lcdSpeed = new QLCDNumber();
-	lcdSpeed->setDigitCount(3);
-	buttLay->addWidget(lcdSpeed);
+	labelSpeed = new QLabel();
+	//labelSpeed->setDigitCount(3);
+	//QFont font = lcdSpeed->font();
+	//font.setPointSize(20);
+	//font.setFamily("monospaced");
+	//lcdSpeed->setFont(font);
+	labelSpeed->setStyleSheet("font-family: monospace; font-size: 32pt; font-weight: bold; background-color: #333333; color: #efffff;");
+	buttLay->addWidget(labelSpeed);
 
 	QPushButton *buttInc10 = new QPushButton();
 	buttInc10->setText(">>");
@@ -68,6 +73,13 @@ AutoThrottleWidget::AutoThrottleWidget(QWidget *parent) :
 
 void AutoThrottleWidget::on_speed_button(QAbstractButton *butt)
 {
+	int val = labelSpeed->text().toInt();
+	//if(val < 70){
+	//	return;
+	//}
+	val = val + butt->property("val").toInt();
+
+	emit set_node("/autopilot/settings/target-speed-kt", QString::number(val));
 	//lcdSpeed->display(butt->);
 	//serverCall->fetch("/autopilot/settings");
 	//emit fetch_node("/autopilot/settings/");
@@ -78,10 +90,10 @@ void AutoThrottleWidget::on_speed_button(QAbstractButton *butt)
 
 void AutoThrottleWidget::on_node_val(QString node, QString val)
 {
-	qDebug() << node <<  val;
+	//qDebug() << node <<  val;
 	if(node == "/autopilot/settings/target-speed-kt"){
-		lcdSpeed->display(val);
-		qDebug() << "YES";
+		labelSpeed->setText(val);
+		//qDebug() << "YES";
 	}
 }
 

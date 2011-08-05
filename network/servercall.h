@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QHash>
 
+#include <QScriptEngine>
+
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
 #include <QNetworkReply>
@@ -22,6 +24,8 @@ public:
 	QString server_url;
 	void set_url(QString new_server);
 
+	QScriptEngine scriptEngine;
+
 signals:
 	void node_val(QString node, QString value);
 	//void node_vals(QHash<QString, QString> vals);
@@ -32,6 +36,7 @@ public slots:
 	void on_net_error(QNetworkReply::NetworkError);
 
 	void fetch_node(QString node);
+	void set_node(QString node, QString val);
 };
 
 #endif // SERVERCALL_H

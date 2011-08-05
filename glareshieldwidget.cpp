@@ -1,4 +1,5 @@
 
+#include <QTimer>
 #include <QHBoxLayout>
 #include <QToolBar>
 
@@ -58,11 +59,20 @@ GlareShieldWidget::GlareShieldWidget(QWidget *parent) :
 	connect(serverCall, SIGNAL(node_val(QString,QString)), autoThrottleWidget, SLOT(on_node_val(QString, QString)));
 	//connect(serverCall, SIGNAL(node_vals(QHash<QString,QString>)), autoThrottleWidget, SLOT(on_node_vals(QHash<QString,QString>)));
 
+	connect(autoThrottleWidget, SIGNAL(set_node(QString,QString)), serverCall, SLOT(set_node(QString, QString)));
+
 	fetch_nodes();
+
+
 
 }
 
 void GlareShieldWidget::fetch_nodes()
 {
 	serverCall->fetch_node("/autopilot/settings");
+
+	if(chkAutoRefresh->isChecked()){
+		QTimer::singleShot(1000, this, SLOT(fetch_nodes()));
+	}
+
 }
