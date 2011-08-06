@@ -13,7 +13,7 @@ GlareShieldWidget::GlareShieldWidget(QWidget *parent) :
 {
 
 
-	setStyleSheet("background-color: #767676;");
+	//setStyleSheet("background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #808080, stop: 1 #6A6A6A);");
 	//setMinimumWidth(600);
 	restoreGeometry( settings.value("glare_shield_widget_window").toByteArray() );
 

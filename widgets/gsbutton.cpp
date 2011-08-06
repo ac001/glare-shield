@@ -7,9 +7,9 @@ GSButton::GSButton(QWidget *parent) :
 {
 	setCheckable(true);
 	setIcon(QIcon(":/icon/butt_off"));
-	setFixedWidth(60);
+	setFixedWidth(65);
 	setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-	setStyleSheet("background-color: black; color: white; font-weight: bold; font-family: sans-serif; font-size: 11pt; padding-top: 3px;");
+	setStyleSheet("background-color: black; color: white; font-weight: bold; font-family: sans-serif; font-size: 10pt; padding-top: 10px;");
 }
 
 void GSButton::set_state(bool checked)

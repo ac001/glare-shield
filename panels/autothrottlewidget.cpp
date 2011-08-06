@@ -23,7 +23,7 @@ AutoThrottleWidget::AutoThrottleWidget(QWidget *parent) :
 
 	QGroupBox *groupBox = new QGroupBox("Speed");
 	mainLayout->addWidget(groupBox);
-	//groupBox->setStyleSheet("background-color: #767676;");
+	//groupBox->setStyleSheet("background-color: transparent;");
 
 	QVBoxLayout *grpLay = new QVBoxLayout();
 	groupBox->setLayout(grpLay);

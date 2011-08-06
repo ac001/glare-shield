@@ -22,12 +22,13 @@ GSReadoutWidget::GSReadoutWidget(QWidget *parent) :
 
 	QGridLayout *gridMain = new QGridLayout();
 	gridMain->setContentsMargins(0,0,0,0);
-	//gridMain->set
+	gridMain->setSpacing(0);
 	setLayout(gridMain);
 
 	//=====================================================
 	QHBoxLayout *topLayout = new QHBoxLayout();
-	gridMain->addLayout(topLayout,0,1,1,3);
+	topLayout->setSpacing(5);
+	gridMain->addLayout(topLayout,0,1,1,1);
 	QString top_style("font-size: 9pt; color: #dddddd; font-weight: bold;");
 
 	topLayout->addStretch(10);
@@ -35,11 +36,14 @@ GSReadoutWidget::GSReadoutWidget(QWidget *parent) :
 	topLabelLeft = new QLabel();
 	topLabelLeft->setAlignment(Qt::AlignRight| Qt::AlignVCenter);
 	topLabelLeft->setStyleSheet(top_style);
+
 	topLayout->addWidget(topLabelLeft);
 
 	buttonTop = new QToolButton();
 	buttonTop->setAutoRaise(false);
-	buttonTop->setStyleSheet("padding: O;");
+	buttonTop->setStyleSheet("padding: O; background-color: #aaaaaa;");
+	buttonTop->setFixedHeight(16);
+	buttonTop->setFixedWidth(16);
 	topLayout->addWidget(buttonTop);
 
 	topLabelCenter = new QLabel();
@@ -61,6 +65,7 @@ GSReadoutWidget::GSReadoutWidget(QWidget *parent) :
 	QString in_style("padding: 0px; margin: 0px;");
 
 	//buttLay->addStretch(10);
+	int butt_width = 14;
 
 	QToolButton *buttonIncBig = new QToolButton();
 	//buttDec10->setText("<<");
@@ -68,6 +73,7 @@ GSReadoutWidget::GSReadoutWidget(QWidget *parent) :
 	buttonIncBig->setProperty("val",QVariant("+big"));
 	buttonIncBig->setAutoRaise(true);
 	buttonIncBig->setStyleSheet(in_style);
+	buttonIncBig->setFixedWidth(butt_width);
 	gridMain->addWidget(buttonIncBig, 1, 0, 1, 1);
 	buttonGroup->addButton(buttonIncBig);
 
@@ -77,6 +83,7 @@ GSReadoutWidget::GSReadoutWidget(QWidget *parent) :
 	buttDecBig->setProperty("val",QVariant("-big"));
 	buttDecBig->setStyleSheet(in_style);
 	buttDecBig->setAutoRaise(true);
+	buttDecBig->setFixedWidth(butt_width);
 	gridMain->addWidget(buttDecBig, 2, 0, 1, 1);
 	buttonGroup->addButton(buttDecBig);
 
@@ -96,7 +103,7 @@ GSReadoutWidget::GSReadoutWidget(QWidget *parent) :
 
 
 	labelMain = new QLabel();
-	labelMain->setText("30000");
+	labelMain->setText("000");
 	labelMain->setStyleSheet("margin: 0px; border: none; font-size: 32pt;  padding: 2px;");
 	readLay->addWidget(labelMain, 0, 1, 2, 1);
 
@@ -109,6 +116,7 @@ GSReadoutWidget::GSReadoutWidget(QWidget *parent) :
 	buttIncSmall->setProperty("val","+small");
 	buttIncSmall->setStyleSheet(in_style);
 	buttIncSmall->setAutoRaise(true);
+	buttIncSmall->setFixedWidth(butt_width);
 	gridMain->addWidget(buttIncSmall, 1, 2, 1, 1);
 	buttonGroup->addButton(buttIncSmall);
 
@@ -117,6 +125,7 @@ GSReadoutWidget::GSReadoutWidget(QWidget *parent) :
 	buttDecSmall->setProperty("val","-small");
 	buttDecSmall->setStyleSheet(in_style);
 	buttDecSmall->setAutoRaise(true);
+	buttDecSmall->setFixedWidth(butt_width);
 	gridMain->addWidget(buttDecSmall, 2, 2, 1, 1);
 	buttonGroup->addButton(buttDecSmall);
 

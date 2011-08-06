@@ -15,8 +15,8 @@ public:
 	GSReadoutWidget *gsAltitudeHold;
 	GSReadoutWidget *gsVerticalSpeed;
 
-	GSButton *buttVNavEnabled;
-
+	GSButton *buttAltitudeHoldEnabled;
+	GSButton *buttVSEnabled;
 
 
 signals:
@@ -25,11 +25,16 @@ signals:
 
 public slots:
 
-	void on_alt_changed(int val);
-	void on_vs_changed(int val);
+
+
 
 	void on_node_val(QString node, QString value);
-	void on_vnav_button_clicked();
+
+	void on_vs_button_clicked();
+	void on_vs_changed(int val);
+
+	void on_alt_changed(int val);
+	void on_alt_hold_button_clicked();
 };
 
 #endif // ALTITUDEWIDGET_H
