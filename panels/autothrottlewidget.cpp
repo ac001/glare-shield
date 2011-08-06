@@ -28,54 +28,12 @@ AutoThrottleWidget::AutoThrottleWidget(QWidget *parent) :
 	QVBoxLayout *grpLay = new QVBoxLayout();
 	groupBox->setLayout(grpLay);
 
-	QHBoxLayout *buttLay = new QHBoxLayout();
-	grpLay->addLayout(buttLay);
 
-	buttGroupSpeed = new QButtonGroup(this);
-	connect(buttGroupSpeed, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(on_speed_button(QAbstractButton*)));
-
-	QString in_style("font-size: 8pt; font-weight: bold;");
-
-	buttLay->addStretch(10);
-	QToolButton *buttDec10 = new QToolButton();
-	buttDec10->setText("<<");
-	buttDec10->setProperty("val",QVariant("-10"));
-	buttDec10->setAutoRaise(true);
-	buttDec10->setStyleSheet(in_style);
-	buttLay->addWidget(buttDec10);
-	buttGroupSpeed->addButton(buttDec10);
-
-	QToolButton *buttDec1 = new QToolButton();
-	buttDec1->setText("<");
-	buttDec1->setProperty("val",QVariant("-1"));
-	buttDec1->setStyleSheet(in_style);
-	buttDec1->setAutoRaise(true);
-	buttLay->addWidget(buttDec1);
-	buttGroupSpeed->addButton(buttDec1);
-
-	labelSpeed = new QLabel();
-	labelSpeed->setFixedWidth(120);
-	labelSpeed->setStyleSheet("padding: 5px; font-family: monospace; font-size: 32pt; font-weight: bold; background-color: #333333; color: #efefef; text-align: center; border: 3px solid #999999;");
-	buttLay->addWidget(labelSpeed);
+	gsReadout = new GSReadoutWidget();
+	grpLay->addWidget(gsReadout);
+	connect(gsReadout, SIGNAL(prop_val(int)), this, SLOT(on_alt_changed(int)));
 
 
-	QToolButton *buttInc1 = new QToolButton();
-	buttInc1->setText(">");
-	buttInc1->setProperty("val","1");
-	buttInc1->setStyleSheet(in_style);
-	buttInc1->setAutoRaise(true);
-	buttLay->addWidget(buttInc1);
-	buttGroupSpeed->addButton(buttInc1);
-
-	QToolButton *buttInc10 = new QToolButton();
-	buttInc10->setText(">>");
-	buttInc10->setProperty("val","10");
-	buttInc10->setStyleSheet(in_style);
-	buttInc10->setAutoRaise(true);
-	buttLay->addWidget(buttInc10);
-	buttGroupSpeed->addButton(buttInc10);
-
-	buttLay->addStretch(10);
 
 	//====================================================
 	QGridLayout *layModes = new QGridLayout();
@@ -102,19 +60,15 @@ AutoThrottleWidget::AutoThrottleWidget(QWidget *parent) :
 
 }
 
-void AutoThrottleWidget::on_speed_button(QAbstractButton *butt)
+void AutoThrottleWidget::on_val_changed(int val)
 {
-	int val = labelSpeed->text().toInt();
-	val = val + butt->property("val").toInt();
 	emit set_node("/autopilot/settings/target-speed-kt", QString::number(val));
-
 }
 
 void AutoThrottleWidget::on_node_val(QString node, QString value)
 {
-	//qDebug() << " - at=" << node <<  value;
 	if(node == "/autopilot/settings/target-speed-kt"){
-		labelSpeed->setText(value);
+		gsReadout->labelMain->setText(value);
 	}
 	if(node == "/instrumentation/flightdirector/at-on"){
 		buttATEnabled->set_state(value == "1");

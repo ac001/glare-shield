@@ -13,8 +13,8 @@ GlareShieldWidget::GlareShieldWidget(QWidget *parent) :
 {
 
 
-
-	setMinimumWidth(500);
+	setStyleSheet("background-color: #767676;");
+	//setMinimumWidth(600);
 	restoreGeometry( settings.value("glare_shield_widget_window").toByteArray() );
 
 
@@ -50,10 +50,17 @@ GlareShieldWidget::GlareShieldWidget(QWidget *parent) :
 	connect(butttRefresh, SIGNAL(clicked()), this, SLOT(fetch_nodes()));
 
 	//==========================================================
-	AutoThrottleWidget *autoThrottleWidget = new AutoThrottleWidget();
-	mainLayout->addWidget(autoThrottleWidget);
 
+	QHBoxLayout *middleLayout = new QHBoxLayout();
+	mainLayout->addLayout(middleLayout);
 
+	autoThrottleWidget = new AutoThrottleWidget();
+	middleLayout->addWidget(autoThrottleWidget);
+
+	altitudeWidget = new AltitudeWidget();
+	middleLayout->addWidget(altitudeWidget);
+
+	middleLayout->addStretch(20);
 	//==========================================================
 	serverCall = new ServerCall(this);
 	serverCall->set_url(txtServerUrl->text());

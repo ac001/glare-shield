@@ -5,10 +5,9 @@
 #include <QButtonGroup>
 #include <QLabel>
 #include <QRadioButton>
-#include <QPushButton>
-#include <QToolButton>
 
-#include "panels/gsbutton.h"
+#include "widgets/gsbutton.h"
+#include "widgets/gsreadoutwidget.h"
 
 class AutoThrottleWidget : public QWidget
 {
@@ -16,8 +15,7 @@ Q_OBJECT
 public:
 	explicit AutoThrottleWidget(QWidget *parent = 0);
 
-	QButtonGroup *buttGroupSpeed;
-	QLabel *labelSpeed;
+	GSReadoutWidget *gsReadout;
 
 	QRadioButton *radioSpeedWithThrottle;
 	QRadioButton *radioSpeedWithPitch;
@@ -29,9 +27,11 @@ signals:
 	void set_node(QString node, QString val);
 
 public slots:
-	void on_speed_button(QAbstractButton *butt);
+
 	void on_node_val(QString node, QString val);
-	//void on_node_vals(QHash<QString,QString>);
+
+
+	void on_val_changed(int val);
 	void on_at_button_clicked();
 };
 

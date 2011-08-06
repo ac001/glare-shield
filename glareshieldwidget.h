@@ -10,8 +10,9 @@
 #include <QLineEdit>
 #include <QPushButton>
 
-#include "panels/gsbutton.h"
+#include "widgets/gsbutton.h"
 #include "panels/autothrottlewidget.h"
+#include "panels/altitudewidget.h"
 #include "network/servercall.h"
 
 class GlareShieldWidget : public QWidget
@@ -29,7 +30,7 @@ public:
 	GSButton *buttAPEnabled;
 
 	AutoThrottleWidget *autoThrottleWidget;
-
+	AltitudeWidget *altitudeWidget;
 
 	ServerCall *serverCall;
 

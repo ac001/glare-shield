@@ -4,5 +4,9 @@
         <file alias="black">bullet_black.png</file>
         <file alias="butt_on">butt_on.png</file>
         <file alias="butt_off">butt_off.png</file>
+        <file alias="dec_big">bullet_arrow_bottom.png</file>
+        <file alias="dec_small">bullet_arrow_down.png</file>
+        <file alias="inc_big">bullet_arrow_top.png</file>
+        <file alias="inc_small">bullet_arrow_up.png</file>
     </qresource>
 </RCC>

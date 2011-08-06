@@ -9,9 +9,15 @@ SOURCES += main.cpp \
     glareshieldwidget.cpp \
     panels/autothrottlewidget.cpp \
     network/servercall.cpp \
-    panels/gsbutton.cpp
+    widgets/gsbutton.cpp \
+    panels/altitudewidget.cpp \
+    widgets/gsreadoutwidget.cpp \
+    widgets/xgroupboxes.cpp
 HEADERS += glareshieldwidget.h \
     panels/autothrottlewidget.h \
     network/servercall.h \
-    panels/gsbutton.h
+    widgets/gsbutton.h \
+    panels/altitudewidget.h \
+    widgets/gsreadoutwidget.h \
+    widgets/xgroupboxes.h
 RESOURCES += resources/icons.qrc
