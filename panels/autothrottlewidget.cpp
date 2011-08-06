@@ -10,6 +10,7 @@
 #include <QLCDNumber>
 #include <QGroupBox>
 
+
 #include "panels/autothrottlewidget.h"
 
 AutoThrottleWidget::AutoThrottleWidget(QWidget *parent) :
@@ -18,9 +19,12 @@ AutoThrottleWidget::AutoThrottleWidget(QWidget *parent) :
 	QHBoxLayout *mainLayout = new QHBoxLayout();
 	setLayout(mainLayout);
 
+	setMaximumWidth(300);
 
 	QGroupBox *groupBox = new QGroupBox("Speed");
 	mainLayout->addWidget(groupBox);
+	groupBox->setStyleSheet("background-color: #767676;");
+
 	QVBoxLayout *grpLay = new QVBoxLayout();
 	groupBox->setLayout(grpLay);
 
@@ -30,49 +34,55 @@ AutoThrottleWidget::AutoThrottleWidget(QWidget *parent) :
 	buttGroupSpeed = new QButtonGroup(this);
 	connect(buttGroupSpeed, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(on_speed_button(QAbstractButton*)));
 
+	QString in_style("font-size: 8pt; font-weight: bold;");
+
+	buttLay->addStretch(10);
 	QToolButton *buttDec10 = new QToolButton();
 	buttDec10->setText("<<");
 	buttDec10->setProperty("val",QVariant("-10"));
+	buttDec10->setAutoRaise(true);
+	buttDec10->setStyleSheet(in_style);
 	buttLay->addWidget(buttDec10);
 	buttGroupSpeed->addButton(buttDec10);
 
 	QToolButton *buttDec1 = new QToolButton();
 	buttDec1->setText("<");
 	buttDec1->setProperty("val",QVariant("-1"));
+	buttDec1->setStyleSheet(in_style);
+	buttDec1->setAutoRaise(true);
 	buttLay->addWidget(buttDec1);
 	buttGroupSpeed->addButton(buttDec1);
 
 	labelSpeed = new QLabel();
-	//labelSpeed->setDigitCount(3);
-	//QFont font = lcdSpeed->font();
-	//font.setPointSize(20);
-	//font.setFamily("monospaced");
-	//lcdSpeed->setFont(font);
-	labelSpeed->setStyleSheet("font-family: monospace; font-size: 32pt; font-weight: bold; background-color: #333333; color: #efffff;");
+	labelSpeed->setFixedWidth(120);
+	labelSpeed->setStyleSheet("padding: 5px; font-family: monospace; font-size: 32pt; font-weight: bold; background-color: #333333; color: #efefef; text-align: center; border: 3px solid #999999;");
 	buttLay->addWidget(labelSpeed);
 
 
-	QPushButton *buttInc1 = new QPushButton();
-	buttInc1->setText(">>");
+	QToolButton *buttInc1 = new QToolButton();
+	buttInc1->setText(">");
 	buttInc1->setProperty("val","1");
+	buttInc1->setStyleSheet(in_style);
+	buttInc1->setAutoRaise(true);
 	buttLay->addWidget(buttInc1);
 	buttGroupSpeed->addButton(buttInc1);
 
-	QPushButton *buttInc10 = new QPushButton();
+	QToolButton *buttInc10 = new QToolButton();
 	buttInc10->setText(">>");
 	buttInc10->setProperty("val","10");
+	buttInc10->setStyleSheet(in_style);
+	buttInc10->setAutoRaise(true);
 	buttLay->addWidget(buttInc10);
 	buttGroupSpeed->addButton(buttInc10);
 
+	buttLay->addStretch(10);
 
 	//====================================================
 	QGridLayout *layModes = new QGridLayout();
 	grpLay->addLayout(layModes);
 
-	buttATEnabled = new QPushButton();
+	buttATEnabled = new GSButton();
 	buttATEnabled->setText("A/T");
-	buttATEnabled->setCheckable(true);
-	buttATEnabled->setIcon(QIcon(":/icon/black"));
 	layModes->addWidget(buttATEnabled, 0, 0, 2, 1);
 	connect(buttATEnabled, SIGNAL(clicked()), this, SLOT(on_at_button_clicked()));
 
@@ -85,6 +95,10 @@ AutoThrottleWidget::AutoThrottleWidget(QWidget *parent) :
 	radioSpeedWithPitch->setText("Speed with Pitch");
 	layModes->addWidget(radioSpeedWithPitch, 1, 1, 1, 1);
 
+	//QDial *dial = new QDial();
+	//dial->setRange(1,360);
+	//dial->setWrapping(true);
+	//layModes->addWidget(dial, 1, 2, 2, 1);
 
 }
 
@@ -101,12 +115,9 @@ void AutoThrottleWidget::on_node_val(QString node, QString value)
 	//qDebug() << " - at=" << node <<  value;
 	if(node == "/autopilot/settings/target-speed-kt"){
 		labelSpeed->setText(value);
-		//qDebug() << "YES";
 	}
 	if(node == "/instrumentation/flightdirector/at-on"){
-		//qDebug() << node << value;
-		buttATEnabled->setIcon(QIcon(value == "1" ? ":/icon/green" : ":/icon/black"));
-		buttATEnabled->setChecked(value == "1");
+		buttATEnabled->set_state(value == "1");
 	}
 }
 

@@ -1,6 +1,8 @@
+glare-shield.pro.user
 glare-shield
 Makefile
 *.o
 moc_*.cpp
 moc_*.o
+qrc_*.cpp
 

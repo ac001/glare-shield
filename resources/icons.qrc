@@ -2,5 +2,7 @@
     <qresource prefix="/icon">
         <file alias="green">bullet_picture.png</file>
         <file alias="black">bullet_black.png</file>
+        <file alias="butt_on">butt_on.png</file>
+        <file alias="butt_off">butt_off.png</file>
     </qresource>
 </RCC>

@@ -8,8 +8,10 @@ TEMPLATE = app
 SOURCES += main.cpp \
     glareshieldwidget.cpp \
     panels/autothrottlewidget.cpp \
-    network/servercall.cpp
+    network/servercall.cpp \
+    panels/gsbutton.cpp
 HEADERS += glareshieldwidget.h \
     panels/autothrottlewidget.h \
-    network/servercall.h
+    network/servercall.h \
+    panels/gsbutton.h
 RESOURCES += resources/icons.qrc

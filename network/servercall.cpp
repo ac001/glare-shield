@@ -64,6 +64,7 @@ void ServerCall::check_q()
 
 void ServerCall::set_node(QString node, QString val)
 {
+	in_request = true;
 	QUrl url (server_url);
 	url.setPath(node);
 	url.addQueryItem("json", "1");
@@ -104,7 +105,7 @@ void ServerCall::on_net_ready_read()
 void ServerCall::on_net_finished(){
 
 	QScriptValue sc;
-
+	qDebug() << server_string;
 	sc = scriptEngine.evaluate("(" + QString(server_string) + ")"); //?? why ?? In new versions it may need to look like engine.evaluate("(" + QString(result) + ")");
 
 	QHash<QString, QString> hash;

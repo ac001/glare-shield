@@ -13,7 +13,9 @@ GlareShieldWidget::GlareShieldWidget(QWidget *parent) :
 {
 
 
+
 	setMinimumWidth(500);
+	restoreGeometry( settings.value("glare_shield_widget_window").toByteArray() );
 
 
 	QVBoxLayout *mainLayout = new QVBoxLayout();
@@ -23,10 +25,8 @@ GlareShieldWidget::GlareShieldWidget(QWidget *parent) :
 	QToolBar *controlBar = new QToolBar();
 	mainLayout->addWidget(controlBar);
 
-	buttAPEnabled = new QPushButton();
+	buttAPEnabled = new GSButton();
 	buttAPEnabled->setText("A/P");
-	buttAPEnabled->setCheckable(true);
-	buttAPEnabled->setIcon(QIcon(":/icon/black"));
 	controlBar->addWidget(buttAPEnabled);
 	connect(buttAPEnabled, SIGNAL(clicked()), this, SLOT(on_ap_button_clicked()));
 
@@ -59,10 +59,11 @@ GlareShieldWidget::GlareShieldWidget(QWidget *parent) :
 	serverCall->set_url(txtServerUrl->text());
 
 	connect(autoThrottleWidget, SIGNAL(fetch_node(QString)), serverCall, SLOT(fetch_node(QString)));
-	connect(serverCall, SIGNAL(node_val(QString,QString)), autoThrottleWidget, SLOT(on_node_val(QString, QString)));
 	//connect(serverCall, SIGNAL(node_vals(QHash<QString,QString>)), autoThrottleWidget, SLOT(on_node_vals(QHash<QString,QString>)));
-
 	connect(autoThrottleWidget, SIGNAL(set_node(QString,QString)), serverCall, SLOT(set_node(QString, QString)));
+
+	connect(serverCall, SIGNAL(node_val(QString,QString)), autoThrottleWidget, SLOT(on_node_val(QString, QString)));
+	connect(serverCall, SIGNAL(node_val(QString,QString)), this, SLOT(on_node_val(QString, QString)));
 
 	fetch_nodes();
 
@@ -76,7 +77,7 @@ void GlareShieldWidget::fetch_nodes()
 	serverCall->fetch_node("/instrumentation/flightdirector/");
 
 	if(chkAutoRefresh->isChecked()){
-		QTimer::singleShot(1000, this, SLOT(fetch_nodes()));
+		//QTimer::singleShot(1000, this, SLOT(fetch_nodes()));
 	}
 
 }
@@ -84,4 +85,20 @@ void GlareShieldWidget::fetch_nodes()
 void GlareShieldWidget::on_ap_button_clicked()
 {
 	serverCall->set_node("/instrumentation/flightdirector/autopilot-on", buttAPEnabled->isChecked() ? "1" : "0");
+}
+
+void GlareShieldWidget::on_node_val(QString node, QString value)
+{
+	if(node == "/instrumentation/flightdirector/autopilot-on"){
+		 buttAPEnabled->set_state(value == "1");
+	}
+}
+
+
+
+
+//= window close
+void GlareShieldWidget::closeEvent(QCloseEvent *event){
+	Q_UNUSED(event);
+	settings.setValue("glare_shield_widget_window", QVariant(saveGeometry()));
 }

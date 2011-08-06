@@ -6,8 +6,9 @@
 #include <QLabel>
 #include <QRadioButton>
 #include <QPushButton>
+#include <QToolButton>
 
-
+#include "panels/gsbutton.h"
 
 class AutoThrottleWidget : public QWidget
 {
@@ -21,7 +22,7 @@ public:
 	QRadioButton *radioSpeedWithThrottle;
 	QRadioButton *radioSpeedWithPitch;
 
-	QPushButton *buttATEnabled;
+	GSButton *buttATEnabled;
 
 signals:
 	void fetch_node(QString node);
