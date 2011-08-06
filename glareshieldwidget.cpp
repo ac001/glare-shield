@@ -65,11 +65,15 @@ GlareShieldWidget::GlareShieldWidget(QWidget *parent) :
 	serverCall = new ServerCall(this);
 	serverCall->set_url(txtServerUrl->text());
 
-	connect(autoThrottleWidget, SIGNAL(fetch_node(QString)), serverCall, SLOT(fetch_node(QString)));
-	//connect(serverCall, SIGNAL(node_vals(QHash<QString,QString>)), autoThrottleWidget, SLOT(on_node_vals(QHash<QString,QString>)));
+	//connect(autoThrottleWidget, SIGNAL(fetch_node(QString)), serverCall, SLOT(fetch_node(QString)));
 	connect(autoThrottleWidget, SIGNAL(set_node(QString,QString)), serverCall, SLOT(set_node(QString, QString)));
 
+	//connect(autoThrottleWidget, SIGNAL(fetch_node(QString)), serverCall, SLOT(fetch_node(QString)));
+	connect(altitudeWidget, SIGNAL(set_node(QString,QString)), serverCall, SLOT(set_node(QString, QString)));
+
+
 	connect(serverCall, SIGNAL(node_val(QString,QString)), autoThrottleWidget, SLOT(on_node_val(QString, QString)));
+	connect(serverCall, SIGNAL(node_val(QString,QString)), altitudeWidget, SLOT(on_node_val(QString, QString)));
 	connect(serverCall, SIGNAL(node_val(QString,QString)), this, SLOT(on_node_val(QString, QString)));
 
 	fetch_nodes();

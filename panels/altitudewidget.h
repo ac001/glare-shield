@@ -12,7 +12,8 @@ Q_OBJECT
 public:
 	explicit AltitudeWidget(QWidget *parent = 0);
 
-	GSReadoutWidget *gsReadout;
+	GSReadoutWidget *gsAltitudeHold;
+	GSReadoutWidget *gsVerticalSpeed;
 
 	GSButton *buttVNavEnabled;
 
@@ -24,10 +25,11 @@ signals:
 
 public slots:
 
-	void on_val_changed(int val);
+	void on_alt_changed(int val);
+	void on_vs_changed(int val);
 
 	void on_node_val(QString node, QString value);
-
+	void on_vnav_button_clicked();
 };
 
 #endif // ALTITUDEWIDGET_H

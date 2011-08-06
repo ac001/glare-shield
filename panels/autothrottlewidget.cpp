@@ -23,15 +23,17 @@ AutoThrottleWidget::AutoThrottleWidget(QWidget *parent) :
 
 	QGroupBox *groupBox = new QGroupBox("Speed");
 	mainLayout->addWidget(groupBox);
-	groupBox->setStyleSheet("background-color: #767676;");
+	//groupBox->setStyleSheet("background-color: #767676;");
 
 	QVBoxLayout *grpLay = new QVBoxLayout();
 	groupBox->setLayout(grpLay);
 
 
 	gsReadout = new GSReadoutWidget();
+	gsReadout->setup(3,10,1);
+	gsReadout->set_top("IAS", "Mach");
 	grpLay->addWidget(gsReadout);
-	connect(gsReadout, SIGNAL(prop_val(int)), this, SLOT(on_alt_changed(int)));
+	connect(gsReadout, SIGNAL(prop_val(int)), this, SLOT(on_val_changed(int)));
 
 
 
@@ -68,7 +70,7 @@ void AutoThrottleWidget::on_val_changed(int val)
 void AutoThrottleWidget::on_node_val(QString node, QString value)
 {
 	if(node == "/autopilot/settings/target-speed-kt"){
-		gsReadout->labelMain->setText(value);
+		gsReadout->set_value(value);
 	}
 	if(node == "/instrumentation/flightdirector/at-on"){
 		buttATEnabled->set_state(value == "1");

@@ -1,5 +1,5 @@
 
-
+#include <QtDebug>
 
 #include <QVariant>
 
@@ -15,8 +15,8 @@ GSReadoutWidget::GSReadoutWidget(QWidget *parent) :
 {
 	step_big = 10;
 	step_small = 1;
-
-	setFixedHeight(70);
+	digit_size = 3;
+	setFixedHeight(100);
 	//setFixedHeight(100);
 
 
@@ -25,14 +25,36 @@ GSReadoutWidget::GSReadoutWidget(QWidget *parent) :
 	//gridMain->set
 	setLayout(gridMain);
 
-	//=============================
+	//=====================================================
 	QHBoxLayout *topLayout = new QHBoxLayout();
-	gridMain->addLayout(topLayout);
+	gridMain->addLayout(topLayout,0,1,1,3);
+	QString top_style("font-size: 9pt; color: #dddddd; font-weight: bold;");
+
+	topLayout->addStretch(10);
+
+	topLabelLeft = new QLabel();
+	topLabelLeft->setAlignment(Qt::AlignRight| Qt::AlignVCenter);
+	topLabelLeft->setStyleSheet(top_style);
+	topLayout->addWidget(topLabelLeft);
+
+	buttonTop = new QToolButton();
+	buttonTop->setAutoRaise(false);
+	buttonTop->setStyleSheet("padding: O;");
+	topLayout->addWidget(buttonTop);
+
+	topLabelCenter = new QLabel();
+	topLabelCenter->setStyleSheet(top_style);
+	topLayout->addWidget(topLabelCenter);
+
+	topLabelRight = new QLabel();
+	topLabelRight->setStyleSheet(top_style);
+	topLayout->addWidget(topLabelRight);
 
 
+	topLayout->addStretch(10);
 
 
-
+	//=====================================================
 	buttonGroup = new QButtonGroup(this);
 	connect(buttonGroup, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(on_button(QAbstractButton*)));
 
@@ -46,7 +68,7 @@ GSReadoutWidget::GSReadoutWidget(QWidget *parent) :
 	buttonIncBig->setProperty("val",QVariant("+big"));
 	buttonIncBig->setAutoRaise(true);
 	buttonIncBig->setStyleSheet(in_style);
-	gridMain->addWidget(buttonIncBig, 0, 0, 1, 1);
+	gridMain->addWidget(buttonIncBig, 1, 0, 1, 1);
 	buttonGroup->addButton(buttonIncBig);
 
 	QToolButton *buttDecBig = new QToolButton();
@@ -55,13 +77,13 @@ GSReadoutWidget::GSReadoutWidget(QWidget *parent) :
 	buttDecBig->setProperty("val",QVariant("-big"));
 	buttDecBig->setStyleSheet(in_style);
 	buttDecBig->setAutoRaise(true);
-	gridMain->addWidget(buttDecBig, 1, 0, 1, 1);
+	gridMain->addWidget(buttDecBig, 2, 0, 1, 1);
 	buttonGroup->addButton(buttDecBig);
 
 	//===================================================
 	QWidget *readoutWidget = new QWidget();
-	readoutWidget->setStyleSheet("padding: 0px; margin: 0px; font-family: monospace; font-size: 32pt; font-weight: bold; background-color: #333333; color: #efefef; text-align: center; border: 3px solid #999999;");
-	gridMain->addWidget(readoutWidget, 0, 1, 2, 1);
+	readoutWidget->setStyleSheet("padding: 0px; margin: 0px; font-family: monospace; font-size: 32pt; font-weight: bold; background-color: #333333; color: #efefef; text-align: center; border: 2px inset #666666;");
+	gridMain->addWidget(readoutWidget,1, 1, 2, 1);
 
 	QGridLayout *readLay = new QGridLayout();
 	readoutWidget->setLayout(readLay);
@@ -87,7 +109,7 @@ GSReadoutWidget::GSReadoutWidget(QWidget *parent) :
 	buttIncSmall->setProperty("val","+small");
 	buttIncSmall->setStyleSheet(in_style);
 	buttIncSmall->setAutoRaise(true);
-	gridMain->addWidget(buttIncSmall, 0, 2, 1, 1);
+	gridMain->addWidget(buttIncSmall, 1, 2, 1, 1);
 	buttonGroup->addButton(buttIncSmall);
 
 	QToolButton *buttDecSmall = new QToolButton();
@@ -95,7 +117,7 @@ GSReadoutWidget::GSReadoutWidget(QWidget *parent) :
 	buttDecSmall->setProperty("val","-small");
 	buttDecSmall->setStyleSheet(in_style);
 	buttDecSmall->setAutoRaise(true);
-	gridMain->addWidget(buttDecSmall, 1, 2, 1, 1);
+	gridMain->addWidget(buttDecSmall, 2, 2, 1, 1);
 	buttonGroup->addButton(buttDecSmall);
 
 }
@@ -122,8 +144,35 @@ void GSReadoutWidget::on_button(QAbstractButton *butt)
 
 
 
-void GSReadoutWidget::set_steps(int big, int small)
+void GSReadoutWidget::setup(int digit_siz, int big, int small)
 {
 	step_big = big;
 	step_small = small;
+	digit_size = digit_siz;
+}
+
+
+void GSReadoutWidget::set_value(QString value)
+{
+	QString zeros("00000");
+	qDebug() << value;
+	if(value.length() != digit_size){
+		value.prepend(zeros.mid(0, digit_size - value.length()));
+	}
+	labelMain->setText(value);
+
+}
+
+void GSReadoutWidget::set_top(QString center)
+{
+	topLabelLeft->hide();
+	topLabelRight->hide();
+	buttonTop->hide();
+	topLabelCenter->setText(center);
+}
+void GSReadoutWidget::set_top(QString left, QString right)
+{
+	topLabelCenter->hide();
+	topLabelLeft->setText(left);
+	topLabelRight->setText(right);
 }
