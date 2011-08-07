@@ -67,10 +67,19 @@ GlareShieldWidget::GlareShieldWidget(QWidget *parent) :
 	altitudeWidget = new AltitudeWidget();
 	middleLayout->addWidget(altitudeWidget);
 
+
+
+	QHBoxLayout *bottomMiddleLayout = new QHBoxLayout();
+	mainLayout->addLayout(bottomMiddleLayout);
+
 	landingGearWidget = new LandingGearWidget();
-	middleLayout->addWidget(landingGearWidget);
+	bottomMiddleLayout->addWidget(landingGearWidget);
+
+	bottomMiddleLayout->addStretch(20);
 
 	middleLayout->addStretch(20);
+
+
 	//==========================================================
 	serverCall = new ServerCall(this);
 	serverCall->set_url(txtServerUrl->text());
@@ -78,10 +87,14 @@ GlareShieldWidget::GlareShieldWidget(QWidget *parent) :
 	connect(autoThrottleWidget, SIGNAL(set_node(QString,QString)), serverCall, SLOT(set_node(QString, QString)));
 	connect(headingWidget, SIGNAL(set_node(QString,QString)), serverCall, SLOT(set_node(QString, QString)));
 	connect(altitudeWidget, SIGNAL(set_node(QString,QString)), serverCall, SLOT(set_node(QString, QString)));
+	connect(landingGearWidget, SIGNAL(set_node(QString,QString)), serverCall, SLOT(set_node(QString, QString)));
+
+	connect(landingGearWidget, SIGNAL(fetch_node(QString)), serverCall, SLOT(fetch_node(QString)));
 
 	connect(serverCall, SIGNAL(node_val(QString,QString)), autoThrottleWidget, SLOT(on_node_val(QString, QString)));
 	connect(serverCall, SIGNAL(node_val(QString,QString)), headingWidget, SLOT(on_node_val(QString, QString)));
 	connect(serverCall, SIGNAL(node_val(QString,QString)), altitudeWidget, SLOT(on_node_val(QString, QString)));
+	connect(serverCall, SIGNAL(node_val(QString,QString)), landingGearWidget, SLOT(on_node_val(QString, QString)));
 
 	connect(serverCall, SIGNAL(node_val(QString,QString)), this, SLOT(on_node_val(QString, QString)));
 
@@ -95,6 +108,7 @@ void GlareShieldWidget::fetch_nodes()
 {
 	serverCall->fetch_node("/autopilot/settings");
 	serverCall->fetch_node("/instrumentation/flightdirector/");
+	serverCall->fetch_node("/controls/gear");
 
 	if(chkAutoRefresh->isChecked()){
 		//QTimer::singleShot(1000, this, SLOT(fetch_nodes()));
