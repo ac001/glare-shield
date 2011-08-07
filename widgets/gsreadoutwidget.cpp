@@ -59,69 +59,47 @@ GSReadoutWidget::GSReadoutWidget(int digits, QWidget *parent) :
 	topLayout->addStretch(10);
 
 
-	//=====================================================
-	buttonGroup = new QButtonGroup(this);
-	connect(buttonGroup, SIGNAL(buttonClicked(QAbstractButton*)), this, SLOT(on_button(QAbstractButton*)));
-
-	QString in_style("padding: 0px; margin: 0px;");
-
-	//buttLay->addStretch(10);
-	int butt_width = 14;
-
-	QToolButton *buttonIncBig = new QToolButton();
-	//buttDec10->setText("<<");
-	buttonIncBig->setIcon(QIcon(":/icon/inc_big"));
-	buttonIncBig->setProperty("val",QVariant("+big"));
-	buttonIncBig->setAutoRaise(true);
-	buttonIncBig->setStyleSheet(in_style);
-	buttonIncBig->setFixedWidth(butt_width);
-	gridMain->addWidget(buttonIncBig, 1, 0, 1, 1);
-	buttonGroup->addButton(buttonIncBig);
-
-	QToolButton *buttDecBig = new QToolButton();
-	//buttDec1->setText("<");
-	buttDecBig->setIcon(QIcon(":/icon/dec_big"));
-	buttDecBig->setProperty("val",QVariant("-big"));
-	buttDecBig->setStyleSheet(in_style);
-	buttDecBig->setAutoRaise(true);
-	buttDecBig->setFixedWidth(butt_width);
-	gridMain->addWidget(buttDecBig, 2, 0, 1, 1);
-	buttonGroup->addButton(buttDecBig);
 
 	//===================================================
 	QWidget *readoutWidget = new QWidget();
 	readoutWidget->setStyleSheet("padding: 0px; margin: 0px; font-family: monospace; font-size: 32pt; font-weight: bold; background-color: #333333; color: #efefef; text-align: center; border: 2px inset #666666;");
 	gridMain->addWidget(readoutWidget,1, 1, 2, 1);
 
-	QGridLayout *readLay = new QGridLayout();
+	QHBoxLayout *readLay = new QHBoxLayout();
 	int m = 3;
 	readLay->setContentsMargins(m,m,m,m);
 	readLay->setSpacing(0);
 	readoutWidget->setLayout(readLay);
 
+	QVBoxLayout *sideLay = new QVBoxLayout();
+	readLay->addLayout(sideLay);
+
 	labelMode = new QLabel();
 	labelMode->setText("TRK");
 	labelMode->setFixedWidth(40);
-	labelMode->setAlignment(Qt::AlignRight);
-	labelMode->setStyleSheet("margin: 0px; border: none; font-size: 12pt;  padding: 0; background-color: red;");
-	readLay->addWidget(labelMode, 0, 0, 1, 1);
+	labelMode->setAlignment(Qt::AlignHCenter);
+	labelMode->setStyleSheet("margin: 0px; border: none; font-size: 12pt;  padding: 0px 0px 0px 0px;");
+	sideLay->addWidget(labelMode);
 
 	labelPosNeg = new QLabel();
 	labelPosNeg->setText("-");
 	labelPosNeg->setFixedWidth(40);
 	labelPosNeg->setAlignment(Qt::AlignRight);
-	labelPosNeg->setStyleSheet("margin: 0px; border: none; font-size: 18pt;  padding: 0px 0px 5px 0px ;background-color: pink;");
-	readLay->addWidget(labelPosNeg, 1, 0, 1, 1);
+	labelPosNeg->setStyleSheet("margin: 0px; border: none; font-size: 20pt;  padding: 0px 0px 0px 0px;");
+	sideLay->addWidget(labelPosNeg);
+
+	sideLay->addStretch(20);
 
 	QHBoxLayout *digitsLayout = new QHBoxLayout();
-	readLay->addLayout(digitsLayout, 0, 1, 2, 1);
+	readLay->addLayout(digitsLayout);
 
 	//for(int loopy= digit_size -1; loopy >= 0; loopy--){
 	for(int loopy = 0; loopy < digit_size; loopy++){
 		XDigit *dig = new XDigit();
 		dig->setText(QString::number(loopy));
-		dig->setFixedHeight(45);
-		dig->setFixedWidth(35);
+		dig->setFixedHeight(42);
+		dig->setFixedWidth(38);
+		dig->setAlignment(Qt::AlignVCenter | Qt::AlignHCenter);
 		QString multi("1");
 		multi.append( QString("0").repeated(digit_size - loopy - 1) );
 		dig->setProperty("multi", multi);
@@ -131,54 +109,6 @@ GSReadoutWidget::GSReadoutWidget(int digits, QWidget *parent) :
 	}
 
 
-
-
-
-
-
-	QToolButton *buttIncSmall = new QToolButton();
-	buttIncSmall->setIcon(QIcon(":/icon/inc_small"));
-	buttIncSmall->setProperty("val","+small");
-	buttIncSmall->setStyleSheet(in_style);
-	buttIncSmall->setAutoRaise(true);
-	buttIncSmall->setFixedWidth(butt_width);
-	gridMain->addWidget(buttIncSmall, 1, 2, 1, 1);
-	buttonGroup->addButton(buttIncSmall);
-
-	QToolButton *buttDecSmall = new QToolButton();
-	buttDecSmall->setIcon(QIcon(":/icon/dec_small"));
-	buttDecSmall->setProperty("val","-small");
-	buttDecSmall->setStyleSheet(in_style);
-	buttDecSmall->setAutoRaise(true);
-	buttDecSmall->setFixedWidth(butt_width);
-	gridMain->addWidget(buttDecSmall, 2, 2, 1, 1);
-	buttonGroup->addButton(buttDecSmall);
-
-	QList<QAbstractButton*> buttons = buttonGroup->buttons();
-	for(int i=0; i < buttons.length(); i++){
-		buttons.at(i)->hide();
-	}
-
-}
-
-
-void GSReadoutWidget::on_button(QAbstractButton *butt)
-{
-	QString prop = butt->property("val").toString();
-	int val = 0;// labelMain->text().toInt();
-
-	if(prop == "+big"){
-		emit prop_val(val + step_big);
-
-	}else if(prop == "-big"){
-		emit prop_val(val - step_big);
-
-	}else if(prop == "+small"){
-		emit prop_val(val + step_small);
-
-	}else if(prop == "-small"){
-		emit prop_val(val - step_small);
-	}
 }
 
 

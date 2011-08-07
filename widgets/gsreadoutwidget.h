@@ -22,7 +22,6 @@ public:
 	QLabel *topLabelCenter;
 	QToolButton *buttonTop;
 
-	QButtonGroup *buttonGroup;
 
 	QList<XDigit *> xDigits;
 	QLabel *labelMode;
@@ -38,13 +37,11 @@ public:
 	QString get_display_val();
 
 signals:
-	//void set_node(QString node, QString value);
+
 	void prop_val(int val);
 
 public slots:
-	void on_button(QAbstractButton *butt);
 
-	//void node_val(QString node, QString value);
 
 	void setup(int big, int small, bool show_side_widgets);
 
