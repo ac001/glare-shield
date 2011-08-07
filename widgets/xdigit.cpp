@@ -6,12 +6,12 @@
 XDigit::XDigit(QWidget *parent) :
 	QLabel(parent)
 {
-	QFont fo = font();
-	fo.setBold(true);
-	fo.setFamily("courier");
-	fo.setPixelSize(60);
-	setFont(fo);
-	setStyleSheet("border: none; color: white;");
+	//QFont fo = font();
+	//fo.setBold(true);
+	//fo.setFamily("monospace");
+	//fo.setPixelSize(10);
+	//setFont(fo);
+	setStyleSheet("border: none; color: white; font-family: monospaced; font-size: 20pt;");
 }
 
 

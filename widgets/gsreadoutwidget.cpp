@@ -29,8 +29,9 @@ GSReadoutWidget::GSReadoutWidget(int digits, QWidget *parent) :
 	//=====================================================
 	QHBoxLayout *topLayout = new QHBoxLayout();
 	topLayout->setSpacing(5);
+	topLayout->setContentsMargins(0, 0, 0, 5);
 	gridMain->addLayout(topLayout,0,1,1,1);
-	QString top_style("font-size: 9pt; color: #dddddd; font-weight: bold;");
+	QString top_style("font-size: 7pt; color: #cccccc; font-weight: bold;");
 
 	topLayout->addStretch(10);
 
@@ -63,7 +64,7 @@ GSReadoutWidget::GSReadoutWidget(int digits, QWidget *parent) :
 
 	//===================================================
 	QWidget *readoutWidget = new QWidget();
-	readoutWidget->setStyleSheet("padding: 0px; margin: 0px; font-family: monospace; font-size: 32pt; font-weight: bold; background-color: #333333; color: #efefef; text-align: center; border: 2px inset #666666;");
+	readoutWidget->setStyleSheet("padding: 0px; margin: 0px;  font-weight: bold; background-color: #333333; color: #efefef; text-align: center; border: 2px inset #666666;");
 	gridMain->addWidget(readoutWidget,1, 1, 2, 1);
 
 	QHBoxLayout *readLay = new QHBoxLayout();
@@ -78,15 +79,17 @@ GSReadoutWidget::GSReadoutWidget(int digits, QWidget *parent) :
 	labelMode = new QLabel();
 	labelMode->setText("TRK");
 	labelMode->setFixedWidth(40);
+	//labelMode->setFixedHeight(20);
+	//labelMode->setContentsMargins(0,5,0,0);
 	labelMode->setAlignment(Qt::AlignHCenter);
-	labelMode->setStyleSheet("margin: 0px; border: none; font-size: 12pt;  padding: 0px 0px 0px 0px;");
+	labelMode->setStyleSheet("margin: 0px; border: none; font-size: 8pt;  font-family: monospace; padding: 0px 0px 0px 0px;");
 	sideLay->addWidget(labelMode);
 
 	labelPosNeg = new QLabel();
 	labelPosNeg->setText("-");
 	labelPosNeg->setFixedWidth(40);
-	labelPosNeg->setAlignment(Qt::AlignRight);
-	labelPosNeg->setStyleSheet("margin: 0px; border: none; font-size: 20pt;  padding: 0px 0px 0px 0px;");
+	labelPosNeg->setAlignment(Qt::AlignRight|Qt::AlignTop);
+	labelPosNeg->setStyleSheet("margin: 0px; border: none; font-size: 14pt;  padding: 0px 0px 0px 0px;");
 	sideLay->addWidget(labelPosNeg);
 
 	sideLay->addStretch(20);
@@ -97,8 +100,8 @@ GSReadoutWidget::GSReadoutWidget(int digits, QWidget *parent) :
 	for(int loopy = 0; loopy < digit_size; loopy++){
 		XDigit *dig = new XDigit();
 		dig->setText(QString::number(loopy));
-		dig->setFixedHeight(42);
-		dig->setFixedWidth(38);
+		dig->setFixedHeight(32);
+		dig->setFixedWidth(28);
 		dig->setAlignment(Qt::AlignVCenter | Qt::AlignHCenter);
 		QString multi("1");
 		multi.append( QString("0").repeated(digit_size - loopy - 1) );

@@ -68,12 +68,15 @@ GlareShieldWidget::GlareShieldWidget(QWidget *parent) :
 	middleLayout->addWidget(altitudeWidget);
 
 
-
+	//== 2nd row
 	QHBoxLayout *bottomMiddleLayout = new QHBoxLayout();
 	mainLayout->addLayout(bottomMiddleLayout);
 
 	landingGearWidget = new LandingGearWidget();
 	bottomMiddleLayout->addWidget(landingGearWidget);
+
+	flapsWidget = new FlapsWidget();
+	bottomMiddleLayout->addWidget(flapsWidget);
 
 	bottomMiddleLayout->addStretch(20);
 

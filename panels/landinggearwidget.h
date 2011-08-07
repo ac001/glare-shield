@@ -31,7 +31,11 @@ public slots:
 	void on_gear_up_button(bool);
 	void set_butt_style();
 
-	void set_indicator_style(QString color);
+	void set_indicator_style(int state);
+	void set_indicator_text(QString label);
+	void clear_indicator_text();
+
+	void refresh_gear_pos();
 
 };
 

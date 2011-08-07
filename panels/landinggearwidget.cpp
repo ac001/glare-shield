@@ -2,6 +2,8 @@
 
 #include <QtDebug>
 
+#include <QTimer>
+
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QGroupBox>
@@ -25,6 +27,13 @@ LandingGearWidget::LandingGearWidget(QWidget *parent) :
 	QVBoxLayout *grpLay = new QVBoxLayout();
 	groupBox->setLayout(grpLay);
 
+	QString top_style("font-size: 9pt; color: #dddddd; font-weight: bold;");
+	QLabel *headLAbel = new QLabel();
+	headLAbel->setAlignment(Qt::AlignHCenter| Qt::AlignVCenter);
+	headLAbel->setStyleSheet(top_style);
+	headLAbel->setText("LANDING GEAR");
+	grpLay->addWidget(headLAbel);
+
 
 	//=====================================
 	QGridLayout *topGrid = new QGridLayout();
@@ -35,17 +44,20 @@ LandingGearWidget::LandingGearWidget(QWidget *parent) :
 
 	lblGear1 = new QLabel();
 	lblGear1->setFixedHeight(30);
+	lblGear1->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 	topGrid->addWidget(lblGear1, 0, 1, 2, 1);
 
 	lblGear2 = new QLabel();
 	lblGear2->setFixedHeight(30);
+	lblGear2->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 	topGrid->addWidget(lblGear2, 1, 0, 2, 1);
 
 	lblGear3 = new QLabel();
 	lblGear3->setFixedHeight(30);
+	lblGear3->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
 	topGrid->addWidget(lblGear3, 1, 2, 2, 1);
 
-	set_indicator_style("#444444");
+	set_indicator_style(2);
 	//=====================
 
 	int widi = 100;
@@ -74,6 +86,10 @@ LandingGearWidget::LandingGearWidget(QWidget *parent) :
 	set_butt_style();
 }
 
+void LandingGearWidget::refresh_gear_pos()
+{
+	emit fetch_node("/gear/gear/position-norm");
+}
 
 void LandingGearWidget::on_gear_down_button(bool state)
 {
@@ -100,16 +116,24 @@ void LandingGearWidget::on_node_val(QString node, QString value)
 		buttGearUp->setChecked(value != "true");
 		buttGearDown->setChecked(value == "true");
 		set_butt_style();
+		set_indicator_style(value == "true" ? 0 : 2);
 
 	}else if(node == "/gear/gear/position-norm"){
-		//qDebug() << "pos=" << value;
+		qDebug() << "pos=" << value;
 		if(value == "1"){
-			set_indicator_style("#006600");
+			set_indicator_style(0);
+			set_indicator_text("OK");
+			QTimer::singleShot(4000, this, SLOT(clear_indicator_text()));
+
 		}else if(value == "0"){
-			set_indicator_style("#333333");
+			set_indicator_style(2);
+			set_indicator_text("UP");
+			QTimer::singleShot(4000, this, SLOT(clear_indicator_text()));
+
 		}else{
-			set_indicator_style("#990000");
-			emit fetch_node("/gear/gear/position-norm");
+			set_indicator_style(1);
+			set_indicator_text("");
+			QTimer::singleShot(1000, this, SLOT(refresh_gear_pos()));
 		}
 
 
@@ -127,13 +151,31 @@ void LandingGearWidget::set_butt_style()
 	buttGearDown->setStyleSheet( buttGearDown->isChecked() ? up_style : down_style );
 }
 
-void LandingGearWidget::set_indicator_style(QString color)
+void LandingGearWidget::set_indicator_style(int state)
 {
-	QString sty("border: 1px inset #777777; background-color:");
+	QString color;
+	if(state == 0){
+		color = "#87C082";
+	}else if(state == 1){
+		color = "#880000";
+	}else if(state == 2){
+		color = "#555555";
+	}
+	QString sty("border: 1px inset #777777; color: white; background-color:");
 	sty.append(color);
-	//qDebug() << sty;
+
 	lblGear1->setStyleSheet(sty);
 	lblGear2->setStyleSheet(sty);
 	lblGear3->setStyleSheet(sty);
 }
+void LandingGearWidget::set_indicator_text(QString text)
+{
+	lblGear1->setText(text);
+	lblGear2->setText(text);
+	lblGear3->setText(text);
+}
 
+void LandingGearWidget::clear_indicator_text()
+{
+	set_indicator_text("");
+}

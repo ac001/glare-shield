@@ -15,7 +15,8 @@ SOURCES += main.cpp \
     widgets/xlabel.cpp \
     widgets/xdigit.cpp \
     panels/headingwidget.cpp \
-    panels/landinggearwidget.cpp
+    panels/landinggearwidget.cpp \
+    panels/flapswidget.cpp
 HEADERS += glareshieldwidget.h \
     panels/autothrottlewidget.h \
     network/servercall.h \
@@ -25,5 +26,6 @@ HEADERS += glareshieldwidget.h \
     widgets/xlabel.h \
     widgets/xdigit.h \
     panels/headingwidget.h \
-    panels/landinggearwidget.h
+    panels/landinggearwidget.h \
+    panels/flapswidget.h
 RESOURCES += resources/icons.qrc

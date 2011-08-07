@@ -17,6 +17,7 @@
 #include "panels/headingwidget.h"
 
 #include "panels/landinggearwidget.h"
+#include "panels/flapswidget.h"
 
 #include "network/servercall.h"
 
@@ -43,7 +44,7 @@ public:
 	AltitudeWidget *altitudeWidget;
 
 	LandingGearWidget *landingGearWidget;
-
+	FlapsWidget *flapsWidget;
 
 
 
