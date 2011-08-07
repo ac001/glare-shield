@@ -34,6 +34,9 @@ public:
 
 	void set_top(QString center);
 	void set_top(QString left, QString right);
+
+	QString get_display_val();
+
 signals:
 	//void set_node(QString node, QString value);
 	void prop_val(int val);
@@ -46,6 +49,8 @@ public slots:
 	void setup(int big, int small, bool show_side_widgets);
 
 	void set_value(QString value);
+
+	void on_digit_nudge_value(int);
 };
 
 #endif // GSREADOUTWIDGET_H

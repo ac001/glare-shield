@@ -23,8 +23,8 @@ GlareShieldWidget::GlareShieldWidget(QWidget *parent) :
 	setLayout(mainLayout);
 
 	//==========================================================
-	QToolBar *controlBar = new QToolBar();
-	mainLayout->addWidget(controlBar);
+	QHBoxLayout *controlBar = new QHBoxLayout();
+	mainLayout->addLayout(controlBar);
 
 	buttAPEnabled = new GSButton();
 	buttAPEnabled->setText("A/P");

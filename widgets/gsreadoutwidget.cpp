@@ -99,13 +99,15 @@ GSReadoutWidget::GSReadoutWidget(int digits, QWidget *parent) :
 	labelMode = new QLabel();
 	labelMode->setText("TRK");
 	labelMode->setFixedWidth(40);
+	labelMode->setAlignment(Qt::AlignRight);
 	labelMode->setStyleSheet("margin: 0px; border: none; font-size: 12pt;  padding: 2px;");
 	readLay->addWidget(labelMode, 0, 0, 1, 1);
 
 	labelPosNeg = new QLabel();
 	labelPosNeg->setText("-");
 	labelPosNeg->setFixedWidth(40);
-	labelPosNeg->setStyleSheet("margin: 0px; border: none; font-size: 12pt;  padding: 2px;");
+	labelPosNeg->setAlignment(Qt::AlignRight);
+	labelPosNeg->setStyleSheet("margin: 0px; border: none; font-size: 16pt;  padding: 2px;");
 	readLay->addWidget(labelPosNeg, 1, 0, 1, 1);
 
 	QHBoxLayout *digitsLayout = new QHBoxLayout();
@@ -115,14 +117,13 @@ GSReadoutWidget::GSReadoutWidget(int digits, QWidget *parent) :
 	for(int loopy = 0; loopy < digit_size; loopy++){
 		XDigit *dig = new XDigit();
 		dig->setText(QString::number(loopy));
-		//dig->setStyleSheet("margin: 0px; border: none; font-size: 32pt;  padding: 2px;");
+		QString multi("1");
+		multi.append( QString("0").repeated(digit_size - loopy - 1) );
+		dig->setProperty("multi", multi);
 		xDigits.append(dig);
 		digitsLayout->addWidget(dig);
-
+		connect(dig, SIGNAL(nudge_value(int)), this, SLOT(on_digit_nudge_value(int)));
 	}
-
-	//labelMain = new XLabel();
-	//labelMain->setText("000");
 
 
 
@@ -210,4 +211,23 @@ void GSReadoutWidget::set_top(QString left, QString right)
 	topLabelCenter->hide();
 	topLabelLeft->setText(left);
 	topLabelRight->setText(right);
+}
+
+
+void GSReadoutWidget::on_digit_nudge_value(int add)
+{
+	qDebug() << add;
+	int v = get_display_val().toInt() + add;
+
+	emit prop_val(v);
+
+}
+
+QString GSReadoutWidget::get_display_val()
+{
+	QString v("");
+	for(int i=0; i < xDigits.size(); i++){
+		v.append(xDigits.at(i)->text());
+	}
+	return v;
 }

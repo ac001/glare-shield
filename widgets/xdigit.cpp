@@ -11,26 +11,16 @@ XDigit::XDigit(QWidget *parent) :
 	fo.setFamily("courier");
 	fo.setPixelSize(60);
 	setFont(fo);
+	setStyleSheet("border: none; color: white;");
 }
 
 
 void XDigit::mousePressEvent(QMouseEvent *ev)
 {
-	//= clicks in the top send nudge_value(bool) "up == true" otherwise false = down
+	int multi = property("multi").toInt();
 	if( ev->y() < height() / 2){
-		emit nudge_value(true);
+		emit nudge_value(multi);
 	}else{
-		emit nudge_value(true);
+		emit nudge_value(multi * -1);
 	}
-}
-
-void XDigit::focusInEvent(QFocusEvent *ev)
-{
-	emit got_focus(true);
-	//setForegroundRole(QColor(250, 250, 0));
-}
-
-void XDigit::focusOutEvent(QFocusEvent *ev)
-{
-	emit got_focus(false);
 }
