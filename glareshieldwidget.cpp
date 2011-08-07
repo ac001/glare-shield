@@ -4,6 +4,7 @@
 #include <QToolBar>
 #include <QToolButton>
 
+
 #include "glareshieldwidget.h"
 
 #include "network/servercall.h"

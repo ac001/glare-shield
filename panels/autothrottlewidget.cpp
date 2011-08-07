@@ -29,9 +29,9 @@ AutoThrottleWidget::AutoThrottleWidget(QWidget *parent) :
 	groupBox->setLayout(grpLay);
 
 
-	gsReadout = new GSReadoutWidget();
-	gsReadout->setup(3,10,1);
-	gsReadout->set_top("IAS", "Mach");
+	gsReadout = new GSReadoutWidget(3);
+	gsReadout->setup(10, 1, true);
+	gsReadout->set_top("IAS", "MACH");
 	grpLay->addWidget(gsReadout);
 	connect(gsReadout, SIGNAL(prop_val(int)), this, SLOT(on_val_changed(int)));
 

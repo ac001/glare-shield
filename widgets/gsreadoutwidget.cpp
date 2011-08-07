@@ -10,12 +10,13 @@
 
 #include "widgets/gsreadoutwidget.h"
 
-GSReadoutWidget::GSReadoutWidget(QWidget *parent) :
+GSReadoutWidget::GSReadoutWidget(int digits, QWidget *parent) :
 	QWidget(parent)
 {
+	digit_size = digits;
 	step_big = 10;
 	step_small = 1;
-	digit_size = 3;
+
 	setFixedHeight(100);
 	//setFixedHeight(100);
 
@@ -95,17 +96,33 @@ GSReadoutWidget::GSReadoutWidget(QWidget *parent) :
 	QGridLayout *readLay = new QGridLayout();
 	readoutWidget->setLayout(readLay);
 
-	labelSide = new QLabel();
-	labelSide->setText("TRK");
-	labelSide->setFixedWidth(40);
-	labelSide->setStyleSheet("margin: 0px; border: none; font-size: 12pt;  padding: 2px;");
-	readLay->addWidget(labelSide,0, 0, 1, 1);
+	labelMode = new QLabel();
+	labelMode->setText("TRK");
+	labelMode->setFixedWidth(40);
+	labelMode->setStyleSheet("margin: 0px; border: none; font-size: 12pt;  padding: 2px;");
+	readLay->addWidget(labelMode, 0, 0, 1, 1);
+
+	labelPosNeg = new QLabel();
+	labelPosNeg->setText("-");
+	labelPosNeg->setFixedWidth(40);
+	labelPosNeg->setStyleSheet("margin: 0px; border: none; font-size: 12pt;  padding: 2px;");
+	readLay->addWidget(labelPosNeg, 1, 0, 1, 1);
+
+	QHBoxLayout *digitsLayout = new QHBoxLayout();
+	readLay->addLayout(digitsLayout, 0, 1, 2, 1);
+
+	for(int loopy=0; loopy < digit_size; loopy++){
+		XDigit *dig = new XDigit();
+		dig->setText("0");
+		//dig->setStyleSheet("margin: 0px; border: none; font-size: 32pt;  padding: 2px;");
+		xDigits.append(dig);
+		digitsLayout->addWidget(dig);
+
+	}
+	//labelMain = new XLabel();
+	//labelMain->setText("000");
 
 
-	labelMain = new QLabel();
-	labelMain->setText("000");
-	labelMain->setStyleSheet("margin: 0px; border: none; font-size: 32pt;  padding: 2px;");
-	readLay->addWidget(labelMain, 0, 1, 2, 1);
 
 
 
@@ -135,7 +152,7 @@ GSReadoutWidget::GSReadoutWidget(QWidget *parent) :
 void GSReadoutWidget::on_button(QAbstractButton *butt)
 {
 	QString prop = butt->property("val").toString();
-	int val = labelMain->text().toInt();
+	int val = 0;// labelMain->text().toInt();
 
 	if(prop == "+big"){
 		emit prop_val(val + step_big);
@@ -153,11 +170,12 @@ void GSReadoutWidget::on_button(QAbstractButton *butt)
 
 
 
-void GSReadoutWidget::setup(int digit_siz, int big, int small)
+void GSReadoutWidget::setup(int big, int small, bool show_side_widgets)
 {
 	step_big = big;
 	step_small = small;
-	digit_size = digit_siz;
+	labelMode->setVisible(show_side_widgets);
+	labelPosNeg->setVisible(show_side_widgets);
 }
 
 
@@ -165,10 +183,13 @@ void GSReadoutWidget::set_value(QString value)
 {
 	QString zeros("00000");
 	qDebug() << value;
-	if(value.length() != digit_size){
-		value.prepend(zeros.mid(0, digit_size - value.length()));
+	//if(value.length() != digit_size){
+	//	value.prepend(zeros.mid(0, digit_size - value.length()));
+	//}
+	for(int idx=0; idx < digit_size; idx++){
+
 	}
-	labelMain->setText(value);
+	//labelMain->setText(value);
 
 }
 

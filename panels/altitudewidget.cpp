@@ -20,8 +20,8 @@ AltitudeWidget::AltitudeWidget(QWidget *parent) :
 	groupBox->addLayout(verticalSpeedLayout);
 
 	//= Vertical Speed Readout
-	gsVerticalSpeed = new GSReadoutWidget();
-	gsVerticalSpeed->setup(4, 100, 10);
+	gsVerticalSpeed = new GSReadoutWidget(4);
+	gsVerticalSpeed->setup( 100, 10, true);
 	gsVerticalSpeed->set_top("V/S", "FPA");
 	verticalSpeedLayout->addWidget(gsVerticalSpeed);
 	connect(gsVerticalSpeed, SIGNAL(prop_val(int)), this, SLOT(on_vs_changed(int)));
@@ -40,10 +40,9 @@ AltitudeWidget::AltitudeWidget(QWidget *parent) :
 	groupBox->addLayout(altHoldLayout);
 
 	//== Altitude readout
-	gsAltitudeHold= new GSReadoutWidget();
-	gsAltitudeHold->setup(5, 1000, 100);
-	gsAltitudeHold->set_top("Altitude");
-	gsAltitudeHold->labelSide->hide();
+	gsAltitudeHold= new GSReadoutWidget(5);
+	gsAltitudeHold->setup(1000, 100, false);
+	gsAltitudeHold->set_top("ALTITUDE");
 	altHoldLayout->addWidget(gsAltitudeHold);
 	connect(gsAltitudeHold, SIGNAL(prop_val(int)), this, SLOT(on_alt_changed(int)));
 
