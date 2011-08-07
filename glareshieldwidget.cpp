@@ -31,14 +31,14 @@ GlareShieldWidget::GlareShieldWidget(QWidget *parent) :
 	controlBar->addWidget(buttAPEnabled);
 	connect(buttAPEnabled, SIGNAL(clicked()), this, SLOT(on_ap_button_clicked()));
 
-	controlBar->addStretch(20);
+	controlBar->addStretch(5);
 
 	chkAutoRefresh = new QCheckBox();
 	chkAutoRefresh->setChecked(true);
 	controlBar->addWidget(chkAutoRefresh);
 
 	txtServerUrl = new QLineEdit();
-	txtServerUrl->setMaximumWidth(150);
+	txtServerUrl->setMaximumWidth(250);
 	txtServerUrl->setText("http://localhost:8888/");
 	controlBar->addWidget(txtServerUrl);
 
@@ -66,6 +66,9 @@ GlareShieldWidget::GlareShieldWidget(QWidget *parent) :
 
 	altitudeWidget = new AltitudeWidget();
 	middleLayout->addWidget(altitudeWidget);
+
+	landingGearWidget = new LandingGearWidget();
+	middleLayout->addWidget(landingGearWidget);
 
 	middleLayout->addStretch(20);
 	//==========================================================

@@ -16,6 +16,7 @@
 #include "panels/altitudewidget.h"
 #include "panels/headingwidget.h"
 
+#include "panels/landinggearwidget.h"
 
 #include "network/servercall.h"
 
@@ -28,6 +29,8 @@ public:
 	explicit GlareShieldWidget(QWidget *parent = 0);
 
 	QSettings settings;
+	ServerCall *serverCall;
+
 
 	QComboBox *comboRefreshRate;
 	QCheckBox *chkAutoRefresh;
@@ -39,7 +42,9 @@ public:
 	HeadingWidget *headingWidget;
 	AltitudeWidget *altitudeWidget;
 
-	ServerCall *serverCall;
+	LandingGearWidget *landingGearWidget;
+
+
 
 
 signals:
