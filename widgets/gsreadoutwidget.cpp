@@ -17,7 +17,7 @@ GSReadoutWidget::GSReadoutWidget(int digits, QWidget *parent) :
 	step_big = 10;
 	step_small = 1;
 
-	setFixedHeight(100);
+
 	//setFixedHeight(100);
 
 
@@ -94,20 +94,23 @@ GSReadoutWidget::GSReadoutWidget(int digits, QWidget *parent) :
 	gridMain->addWidget(readoutWidget,1, 1, 2, 1);
 
 	QGridLayout *readLay = new QGridLayout();
+	int m = 3;
+	readLay->setContentsMargins(m,m,m,m);
+	readLay->setSpacing(0);
 	readoutWidget->setLayout(readLay);
 
 	labelMode = new QLabel();
 	labelMode->setText("TRK");
 	labelMode->setFixedWidth(40);
 	labelMode->setAlignment(Qt::AlignRight);
-	labelMode->setStyleSheet("margin: 0px; border: none; font-size: 12pt;  padding: 2px;");
+	labelMode->setStyleSheet("margin: 0px; border: none; font-size: 12pt;  padding: 0; background-color: red;");
 	readLay->addWidget(labelMode, 0, 0, 1, 1);
 
 	labelPosNeg = new QLabel();
 	labelPosNeg->setText("-");
 	labelPosNeg->setFixedWidth(40);
 	labelPosNeg->setAlignment(Qt::AlignRight);
-	labelPosNeg->setStyleSheet("margin: 0px; border: none; font-size: 16pt;  padding: 2px;");
+	labelPosNeg->setStyleSheet("margin: 0px; border: none; font-size: 18pt;  padding: 0px 0px 5px 0px ;background-color: pink;");
 	readLay->addWidget(labelPosNeg, 1, 0, 1, 1);
 
 	QHBoxLayout *digitsLayout = new QHBoxLayout();
@@ -117,6 +120,8 @@ GSReadoutWidget::GSReadoutWidget(int digits, QWidget *parent) :
 	for(int loopy = 0; loopy < digit_size; loopy++){
 		XDigit *dig = new XDigit();
 		dig->setText(QString::number(loopy));
+		dig->setFixedHeight(45);
+		dig->setFixedWidth(35);
 		QString multi("1");
 		multi.append( QString("0").repeated(digit_size - loopy - 1) );
 		dig->setProperty("multi", multi);
@@ -148,6 +153,11 @@ GSReadoutWidget::GSReadoutWidget(int digits, QWidget *parent) :
 	buttDecSmall->setFixedWidth(butt_width);
 	gridMain->addWidget(buttDecSmall, 2, 2, 1, 1);
 	buttonGroup->addButton(buttDecSmall);
+
+	QList<QAbstractButton*> buttons = buttonGroup->buttons();
+	for(int i=0; i < buttons.length(); i++){
+		buttons.at(i)->hide();
+	}
 
 }
 
@@ -217,7 +227,11 @@ void GSReadoutWidget::set_top(QString left, QString right)
 void GSReadoutWidget::on_digit_nudge_value(int add)
 {
 	qDebug() << add;
-	int v = get_display_val().toInt() + add;
+	int v = get_display_val().toInt();
+	if(labelPosNeg->text() == "-"){
+		v = v * -1;
+	}
+	v = v + add;
 
 	emit prop_val(v);
 
