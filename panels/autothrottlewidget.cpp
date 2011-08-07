@@ -21,7 +21,7 @@ AutoThrottleWidget::AutoThrottleWidget(QWidget *parent) :
 
 	setMaximumWidth(300);
 
-	QGroupBox *groupBox = new QGroupBox("Speed");
+	QGroupBox *groupBox = new QGroupBox();
 	mainLayout->addWidget(groupBox);
 	//groupBox->setStyleSheet("background-color: transparent;");
 

@@ -11,9 +11,15 @@
 #include <QPushButton>
 
 #include "widgets/gsbutton.h"
+
 #include "panels/autothrottlewidget.h"
 #include "panels/altitudewidget.h"
+#include "panels/headingwidget.h"
+
+
 #include "network/servercall.h"
+
+
 
 class GlareShieldWidget : public QWidget
 {
@@ -30,6 +36,7 @@ public:
 	GSButton *buttAPEnabled;
 
 	AutoThrottleWidget *autoThrottleWidget;
+	HeadingWidget *headingWidget;
 	AltitudeWidget *altitudeWidget;
 
 	ServerCall *serverCall;

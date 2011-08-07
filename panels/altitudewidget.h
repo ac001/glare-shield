@@ -26,7 +26,7 @@ signals:
 public slots:
 
 
-
+	void on_vs_fpa();
 
 	void on_node_val(QString node, QString value);
 

@@ -46,6 +46,7 @@ GSReadoutWidget::GSReadoutWidget(int digits, QWidget *parent) :
 	buttonTop->setFixedHeight(16);
 	buttonTop->setFixedWidth(16);
 	topLayout->addWidget(buttonTop);
+	connect(buttonTop, SIGNAL(clicked()), this, SLOT(on_top_button()));
 
 	topLabelCenter = new QLabel();
 	topLabelCenter->setStyleSheet(top_style);
@@ -93,7 +94,6 @@ GSReadoutWidget::GSReadoutWidget(int digits, QWidget *parent) :
 	QHBoxLayout *digitsLayout = new QHBoxLayout();
 	readLay->addLayout(digitsLayout);
 
-	//for(int loopy= digit_size -1; loopy >= 0; loopy--){
 	for(int loopy = 0; loopy < digit_size; loopy++){
 		XDigit *dig = new XDigit();
 		dig->setText(QString::number(loopy));
@@ -174,4 +174,9 @@ QString GSReadoutWidget::get_display_val()
 		v.append(xDigits.at(i)->text());
 	}
 	return v;
+}
+
+void GSReadoutWidget::on_top_button()
+{
+	emit on_top();
 }

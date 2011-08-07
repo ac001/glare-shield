@@ -31,11 +31,14 @@ GlareShieldWidget::GlareShieldWidget(QWidget *parent) :
 	controlBar->addWidget(buttAPEnabled);
 	connect(buttAPEnabled, SIGNAL(clicked()), this, SLOT(on_ap_button_clicked()));
 
+	controlBar->addStretch(20);
+
 	chkAutoRefresh = new QCheckBox();
 	chkAutoRefresh->setChecked(true);
 	controlBar->addWidget(chkAutoRefresh);
 
 	txtServerUrl = new QLineEdit();
+	txtServerUrl->setMaximumWidth(150);
 	txtServerUrl->setText("http://localhost:8888/");
 	controlBar->addWidget(txtServerUrl);
 
@@ -58,6 +61,9 @@ GlareShieldWidget::GlareShieldWidget(QWidget *parent) :
 	autoThrottleWidget = new AutoThrottleWidget();
 	middleLayout->addWidget(autoThrottleWidget);
 
+	headingWidget  = new HeadingWidget();
+	middleLayout->addWidget(headingWidget);
+
 	altitudeWidget = new AltitudeWidget();
 	middleLayout->addWidget(altitudeWidget);
 
@@ -66,15 +72,14 @@ GlareShieldWidget::GlareShieldWidget(QWidget *parent) :
 	serverCall = new ServerCall(this);
 	serverCall->set_url(txtServerUrl->text());
 
-	//connect(autoThrottleWidget, SIGNAL(fetch_node(QString)), serverCall, SLOT(fetch_node(QString)));
 	connect(autoThrottleWidget, SIGNAL(set_node(QString,QString)), serverCall, SLOT(set_node(QString, QString)));
-
-	//connect(autoThrottleWidget, SIGNAL(fetch_node(QString)), serverCall, SLOT(fetch_node(QString)));
+	connect(headingWidget, SIGNAL(set_node(QString,QString)), serverCall, SLOT(set_node(QString, QString)));
 	connect(altitudeWidget, SIGNAL(set_node(QString,QString)), serverCall, SLOT(set_node(QString, QString)));
 
-
 	connect(serverCall, SIGNAL(node_val(QString,QString)), autoThrottleWidget, SLOT(on_node_val(QString, QString)));
+	connect(serverCall, SIGNAL(node_val(QString,QString)), headingWidget, SLOT(on_node_val(QString, QString)));
 	connect(serverCall, SIGNAL(node_val(QString,QString)), altitudeWidget, SLOT(on_node_val(QString, QString)));
+
 	connect(serverCall, SIGNAL(node_val(QString,QString)), this, SLOT(on_node_val(QString, QString)));
 
 	fetch_nodes();

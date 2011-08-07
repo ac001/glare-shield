@@ -1,7 +1,10 @@
 
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QGroupBox>
 
-#include "altitudewidget.h"
-#include "widgets/xgroupboxes.h"
+
+#include "panels/altitudewidget.h"
 
 AltitudeWidget::AltitudeWidget(QWidget *parent) :
 	QWidget(parent)
@@ -10,14 +13,17 @@ AltitudeWidget::AltitudeWidget(QWidget *parent) :
 	QHBoxLayout *mainLayout = new QHBoxLayout();
 	setLayout(mainLayout);
 
-	XGroupHBox *groupBox = new XGroupHBox("Altitude");
+	QGroupBox *groupBox = new QGroupBox();
 	mainLayout->addWidget(groupBox);
-	//groupBox->setStyleSheet("background-color: transparent; border-left:none; border-right: none; border-bottom: none;");
+
+
+	QHBoxLayout *grpLay = new QHBoxLayout();
+	groupBox->setLayout(grpLay);
 
 
 	//==========================================================
 	QVBoxLayout *verticalSpeedLayout = new QVBoxLayout();
-	groupBox->addLayout(verticalSpeedLayout);
+	grpLay->addLayout(verticalSpeedLayout);
 
 	//= Vertical Speed Readout
 	gsVerticalSpeed = new GSReadoutWidget(4);
@@ -25,6 +31,7 @@ AltitudeWidget::AltitudeWidget(QWidget *parent) :
 	gsVerticalSpeed->set_top("V/S", "FPA");
 	verticalSpeedLayout->addWidget(gsVerticalSpeed);
 	connect(gsVerticalSpeed, SIGNAL(prop_val(int)), this, SLOT(on_vs_changed(int)));
+	connect(gsVerticalSpeed, SIGNAL(on_top()), this, SLOT(on_vs_fpa()));
 
 	//====
 	QHBoxLayout *bottomLayoutVs = new QHBoxLayout();
@@ -35,9 +42,11 @@ AltitudeWidget::AltitudeWidget(QWidget *parent) :
 	bottomLayoutVs->addWidget(buttVSEnabled);
 	connect(buttVSEnabled, SIGNAL(clicked()), this, SLOT(on_vs_button_clicked()));
 
+
+
 	//==========================================================
 	QVBoxLayout *altHoldLayout = new QVBoxLayout();
-	groupBox->addLayout(altHoldLayout);
+	grpLay->addLayout(altHoldLayout);
 
 	//== Altitude readout
 	gsAltitudeHold= new GSReadoutWidget(5);
@@ -90,9 +99,16 @@ void AltitudeWidget::on_node_val(QString node, QString value)
 	}else if(node == "/autopilot/settings/target-altitude-ft"){
 		gsAltitudeHold->set_value(value);
 
+	}else if(node == "/instrumentation/flightdirector/fpa-mode-on"){
+		gsVerticalSpeed->labelMode->setText(value == "1" ? "FPA" : "V/S");
 
 	}else if(node == "/instrumentation/flightdirector/vnav"){
 		buttVSEnabled->set_state(value == "3");
 		buttAltitudeHoldEnabled->set_state(value == "2");
 	}
+}
+
+void AltitudeWidget::on_vs_fpa()
+{
+	emit set_node("/instrumentation/flightdirector/fpa-mode-on", gsVerticalSpeed->labelMode->text()  == "FPA" ? "0" : "1");
 }

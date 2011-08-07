@@ -39,6 +39,7 @@ public:
 signals:
 
 	void prop_val(int val);
+	void on_top();
 
 public slots:
 
@@ -48,6 +49,7 @@ public slots:
 	void set_value(QString value);
 
 	void on_digit_nudge_value(int);
+	void on_top_button();
 };
 
 #endif // GSREADOUTWIDGET_H
