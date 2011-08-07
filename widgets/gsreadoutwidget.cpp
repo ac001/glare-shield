@@ -181,13 +181,18 @@ void GSReadoutWidget::setup(int big, int small, bool show_side_widgets)
 
 void GSReadoutWidget::set_value(QString value)
 {
-	QString zeros("00000");
-	qDebug() << value;
+	//QString zeros("00000");
+	//qDebug() << value;
 	//if(value.length() != digit_size){
 	//	value.prepend(zeros.mid(0, digit_size - value.length()));
 	//}
 	for(int idx=0; idx < digit_size; idx++){
-
+		if(idx < 3){
+			//xDigits.at(idx)->setText(value.at(idx));
+			if(idx < value.length()){
+				xDigits.at(idx)->setText(QString::number(idx));
+			}
+		}
 	}
 	//labelMain->setText(value);
 
