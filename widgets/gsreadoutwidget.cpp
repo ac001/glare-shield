@@ -111,14 +111,16 @@ GSReadoutWidget::GSReadoutWidget(int digits, QWidget *parent) :
 	QHBoxLayout *digitsLayout = new QHBoxLayout();
 	readLay->addLayout(digitsLayout, 0, 1, 2, 1);
 
-	for(int loopy=0; loopy < digit_size; loopy++){
+	//for(int loopy= digit_size -1; loopy >= 0; loopy--){
+	for(int loopy = 0; loopy < digit_size; loopy++){
 		XDigit *dig = new XDigit();
-		dig->setText("0");
+		dig->setText(QString::number(loopy));
 		//dig->setStyleSheet("margin: 0px; border: none; font-size: 32pt;  padding: 2px;");
 		xDigits.append(dig);
 		digitsLayout->addWidget(dig);
 
 	}
+
 	//labelMain = new XLabel();
 	//labelMain->setText("000");
 
@@ -181,20 +183,18 @@ void GSReadoutWidget::setup(int big, int small, bool show_side_widgets)
 
 void GSReadoutWidget::set_value(QString value)
 {
-	//QString zeros("00000");
-	//qDebug() << value;
-	//if(value.length() != digit_size){
-	//	value.prepend(zeros.mid(0, digit_size - value.length()));
-	//}
-	for(int idx=0; idx < digit_size; idx++){
-		if(idx < 3){
-			//xDigits.at(idx)->setText(value.at(idx));
-			if(idx < value.length()){
-				xDigits.at(idx)->setText(QString::number(idx));
-			}
-		}
+	int idx;
+	int v = value.toInt();
+	if(v < 0){
+		labelPosNeg->setText("-");
+		v = v * -1;
+	}else{
+		labelPosNeg->setText("");
 	}
-	//labelMain->setText(value);
+	QString number = QString("%1").arg(v, digit_size, 10, QChar('0')).toUpper();
+	for(idx = 0; idx < number.length(); idx++){
+		xDigits.at( idx )->setText(number.at(idx));
+	}
 
 }
 
