@@ -33,6 +33,7 @@ public:
 signals:
 	void node_val(QString node, QString value);
 	//void node_vals(QHash<QString, QString> vals);
+	void server_connected(bool);
 
 public slots:
 	void on_net_ready_read();

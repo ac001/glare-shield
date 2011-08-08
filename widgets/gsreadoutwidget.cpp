@@ -99,7 +99,7 @@ GSReadoutWidget::GSReadoutWidget(int digits, QWidget *parent) :
 
 	for(int loopy = 0; loopy < digit_size; loopy++){
 		XDigit *dig = new XDigit();
-		dig->setText(QString::number(loopy));
+		dig->setText("0");
 		dig->setFixedHeight(32);
 		dig->setFixedWidth(28);
 		dig->setAlignment(Qt::AlignVCenter | Qt::AlignHCenter);

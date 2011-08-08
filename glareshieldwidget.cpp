@@ -1,4 +1,6 @@
 
+#include <QtDebug>
+
 #include <QTimer>
 #include <QHBoxLayout>
 #include <QToolBar>
@@ -53,6 +55,10 @@ GlareShieldWidget::GlareShieldWidget(QWidget *parent) :
 	controlBar->addWidget(butttRefresh);
 	connect(butttRefresh, SIGNAL(clicked()), this, SLOT(fetch_nodes()));
 
+	lblConnected = new QLabel();
+	lblConnected->setFixedWidth(30);
+	controlBar->addWidget(lblConnected);
+
 	//==========================================================
 
 	QHBoxLayout *middleLayout = new QHBoxLayout();
@@ -91,15 +97,19 @@ GlareShieldWidget::GlareShieldWidget(QWidget *parent) :
 	connect(headingWidget, SIGNAL(set_node(QString,QString)), serverCall, SLOT(set_node(QString, QString)));
 	connect(altitudeWidget, SIGNAL(set_node(QString,QString)), serverCall, SLOT(set_node(QString, QString)));
 	connect(landingGearWidget, SIGNAL(set_node(QString,QString)), serverCall, SLOT(set_node(QString, QString)));
+	connect(flapsWidget, SIGNAL(set_node(QString,QString)), serverCall, SLOT(set_node(QString, QString)));
 
 	connect(landingGearWidget, SIGNAL(fetch_node(QString)), serverCall, SLOT(fetch_node(QString)));
+	connect(flapsWidget, SIGNAL(fetch_node(QString)), serverCall, SLOT(fetch_node(QString)));
 
 	connect(serverCall, SIGNAL(node_val(QString,QString)), autoThrottleWidget, SLOT(on_node_val(QString, QString)));
 	connect(serverCall, SIGNAL(node_val(QString,QString)), headingWidget, SLOT(on_node_val(QString, QString)));
 	connect(serverCall, SIGNAL(node_val(QString,QString)), altitudeWidget, SLOT(on_node_val(QString, QString)));
 	connect(serverCall, SIGNAL(node_val(QString,QString)), landingGearWidget, SLOT(on_node_val(QString, QString)));
+	connect(serverCall, SIGNAL(node_val(QString,QString)), flapsWidget, SLOT(on_node_val(QString, QString)));
 
 	connect(serverCall, SIGNAL(node_val(QString,QString)), this, SLOT(on_node_val(QString, QString)));
+	connect(serverCall, SIGNAL(server_connected(bool)), this, SLOT(on_server_connected(bool)));
 
 	fetch_nodes();
 
@@ -112,10 +122,12 @@ void GlareShieldWidget::fetch_nodes()
 	serverCall->fetch_node("/autopilot/settings");
 	serverCall->fetch_node("/instrumentation/flightdirector/");
 	serverCall->fetch_node("/controls/gear");
+	serverCall->fetch_node("/surface-positions/");
+	serverCall->fetch_node("/surface-positions/flap-pos-norm");
 
-	if(chkAutoRefresh->isChecked()){
+	//if(chkAutoRefresh->isChecked()){
 		//QTimer::singleShot(1000, this, SLOT(fetch_nodes()));
-	}
+	//}
 
 }
 
@@ -138,4 +150,13 @@ void GlareShieldWidget::on_node_val(QString node, QString value)
 void GlareShieldWidget::closeEvent(QCloseEvent *event){
 	Q_UNUSED(event);
 	settings.setValue("glare_shield_widget_window", QVariant(saveGeometry()));
+}
+
+
+void GlareShieldWidget::on_server_connected(bool state)
+{
+	QString sty("background-color:");
+	sty.append(state ? "#00ff00" : "#990000");
+	//qDebug() << state << sty;
+	lblConnected->setStyleSheet(sty);
 }

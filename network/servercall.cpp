@@ -91,6 +91,7 @@ void ServerCall::set_node(QString node, QString val)
 //= Error
 void ServerCall::on_net_error(QNetworkReply::NetworkError err){
 	qDebug() << "net Error";
+	emit server_connected(false);
 }
 
 
@@ -104,6 +105,7 @@ void ServerCall::on_net_ready_read()
 //= Net finished
 void ServerCall::on_net_finished(){
 
+	emit server_connected(true);
 	QScriptValue sc;
 	//qDebug() << server_string;
 	sc = scriptEngine.evaluate("(" + QString(server_string) + ")"); //?? why ?? In new versions it may need to look like engine.evaluate("(" + QString(result) + ")");

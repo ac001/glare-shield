@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
 
 
 	QString styles("");
-	styles.append("GlareShieldWidget{background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #808080, stop: 1 #6A6A6A);}");
+	styles.append("GlareShieldWidget{background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #909090, stop: 1 #6A6A6A);}");
 	styles.append("QGroupBox{ background-color: transparent; border: 1px solid #808080;}");
 	app.setStyleSheet(styles);
 

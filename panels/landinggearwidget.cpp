@@ -27,7 +27,7 @@ LandingGearWidget::LandingGearWidget(QWidget *parent) :
 	QVBoxLayout *grpLay = new QVBoxLayout();
 	groupBox->setLayout(grpLay);
 
-	QString top_style("font-size: 9pt; color: #dddddd; font-weight: bold;");
+	QString top_style("font-size: 8pt; color: #dddddd; font-weight: bold;");
 	QLabel *headLAbel = new QLabel();
 	headLAbel->setAlignment(Qt::AlignHCenter| Qt::AlignVCenter);
 	headLAbel->setStyleSheet(top_style);
@@ -153,6 +153,7 @@ void LandingGearWidget::set_butt_style()
 
 void LandingGearWidget::set_indicator_style(int state)
 {
+	// 0 =down, 1 = intermediate, 2 = up
 	QString color;
 	if(state == 0){
 		color = "#87C082";

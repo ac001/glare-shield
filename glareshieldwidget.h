@@ -9,6 +9,7 @@
 #include <QComboBox>
 #include <QLineEdit>
 #include <QPushButton>
+#include <QLabel>
 
 #include "widgets/gsbutton.h"
 
@@ -46,7 +47,7 @@ public:
 	LandingGearWidget *landingGearWidget;
 	FlapsWidget *flapsWidget;
 
-
+	QLabel *lblConnected;
 
 signals:
 
@@ -58,6 +59,8 @@ public slots:
 	//void on_node_vals(QHash<QString,QString>);
 	void on_node_val(QString node, QString value);
 	void on_ap_button_clicked();
+
+	void on_server_connected(bool state);
 };
 
 #endif // GLARESHIELDWIDGET_H
