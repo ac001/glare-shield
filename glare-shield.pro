@@ -1,31 +1,41 @@
-# -------------------------------------------------
-# Project created by QtCreator 2011-08-05T14:31:25
-# -------------------------------------------------
+TEMPLATE = app
+TARGET = glare-shield
+DEPENDPATH += .
+INCLUDEPATH += .
 QT += network \
     script
-TARGET = glare-shield
-TEMPLATE = app
-SOURCES += main.cpp \
-    glareshieldwidget.cpp \
-    panels/autothrottlewidget.cpp \
-    network/servercall.cpp \
-    widgets/gsbutton.cpp \
-    panels/altitudewidget.cpp \
-    widgets/gsreadoutwidget.cpp \
-    widgets/xlabel.cpp \
-    widgets/xdigit.cpp \
-    panels/headingwidget.cpp \
-    panels/landinggearwidget.cpp \
-    panels/flapswidget.cpp
-HEADERS += glareshieldwidget.h \
+HEADERS += panels/landinggearwidget.h \
+    panels/headingwidget.h \
+    panels/flapswidget.h \
+    panels/chatwidget.h \
     panels/autothrottlewidget.h \
-    network/servercall.h \
-    widgets/gsbutton.h \
     panels/altitudewidget.h \
-    widgets/gsreadoutwidget.h \
+    network/servercall.h \
+    glareshieldwidget.h \
     widgets/xlabel.h \
     widgets/xdigit.h \
-    panels/headingwidget.h \
-    panels/landinggearwidget.h \
-    panels/flapswidget.h
+    widgets/gsreadoutwidget.h \
+    widgets/gsbutton.h
+SOURCES += panels/landinggearwidget.cpp \
+    panels/headingwidget.cpp \
+    panels/flapswidget.cpp \
+    panels/chatwidget.cpp \
+    panels/autothrottlewidget.cpp \
+    panels/altitudewidget.cpp \
+    network/servercall.cpp \
+    main.cpp \
+    glareshieldwidget.cpp \
+    widgets/xlabel.cpp \
+    widgets/xdigit.cpp \
+    widgets/gsreadoutwidget.cpp \
+    widgets/gsbutton.cpp
+OTHER_FILES += resources/butt_on.png \
+    resources/butt_off.png \
+    resources/bullet_picture.png \
+    resources/bullet_black.png \
+    resources/bullet_arrow_up.png \
+    resources/bullet_arrow_top.png \
+    resources/bullet_arrow_down.png \
+    resources/bullet_arrow_bottom.png \
+    resources/bot.jpg
 RESOURCES += resources/icons.qrc
