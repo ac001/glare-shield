@@ -130,8 +130,6 @@ void FlapsWidget::on_button_down()
 
 void FlapsWidget::on_slider_moved(int new_val)
 {
-	qDebug() << new_val << 6 - new_val << QString::number(flapsVal.value(QString::number(6 - new_val)));
-	//emit set_node("/controls/flight/flaps", QString::number(flapsVal.value(QString::number(6 - new_val))));
 	send_new_flaps();
 }
 
@@ -140,8 +138,6 @@ void FlapsWidget::send_new_flaps()
 	float val =  flapsVal.value( QString::number(6 - slider->value()));
 	val = val / 1000;
 	QString new_v = QString::number( val  );
-	qDebug() << "S=" << new_v << val ;
-	//return;
 	emit set_node("/controls/flight/flaps", new_v);
 	emit fetch_node("/surface-positions/flap-pos-norm");
 }
@@ -152,12 +148,13 @@ void FlapsWidget::on_node_val(QString node, QString val)
 	static int last_flap = -1;
 
 	if(node == "/surface-positions/flap-pos-norm"){
+
 		float v =   (val.toFloat() * 1000);
 		if(v != last_flap){
 			progressBar->setValue(1000 - v);
 
-			qDebug() << "flaps= " << val << v << progressBar->value();
-			qDebug() << flapsVal.key(v);
+			//qDebug() << "flaps= " << val << v << progressBar->value();
+			//qDebug() << flapsVal.key(v);
 			QString ki = flapsVal.key(v);
 			if(ki.length() > 0){
 				labelFlapsDeg->setText(QString::number(flapsDeg.value(ki)));
@@ -165,7 +162,6 @@ void FlapsWidget::on_node_val(QString node, QString val)
 			}else{
 				labelFlapsDeg->setText("");
 			}
-
 
 			QTimer::singleShot(1000, this, SLOT(refresh_flaps()));
 			last_flap = v;
@@ -175,6 +171,6 @@ void FlapsWidget::on_node_val(QString node, QString val)
 
 void FlapsWidget::refresh_flaps()
 {
-	qDebug() << "\nrefresh flaps";
+	//qDebug() << "\nrefresh flaps";
 	emit fetch_node("/surface-positions/flap-pos-norm");
 }
